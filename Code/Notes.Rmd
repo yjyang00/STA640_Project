@@ -1,0 +1,271 @@
+---
+title: "STA640"
+author: "Yicheng Shen"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = T, warning = F)
+library(tidyverse)
+
+ggplot2::theme_set(ggplot2::theme_bw())
+knitr::opts_chunk$set(out.width = "100%", fig.align = 'center')
+
+library(lme4)
+library(doMC)
+doMC::registerDoMC(8)
+# getDoParWorkers()
+```
+
+$$
+\begin{align*}
+E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+A_i^{\prime} \gamma+\mathrm{X}_{i t} \delta \\
+Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+A_i^{\prime} \gamma+\mathrm{X}_{i t} \delta + \epsilon_{it} 
+\end{align*}
+$$
+
+# trial 1
+
+```{r}
+set.seed(123)
+
+# Number of individuals
+n <- 100
+
+# Unmeasured confounding for each individual
+A <- rnorm(n)
+
+# Covaraite for each individual
+X <- rnorm(n, mean = 15, sd = 5)
+
+# Treatment
+p = ifelse(A >= 1, 0.7, 0.5)
+D <- rbinom(n, 1, p)
+
+# Treatment
+p = ifelse(A >= 1, 0.7, 0.5)
+# p = abs(A) / max(abs(A))
+D <- rbinom(n, 1, 0.5)
+```
+
+```{r}
+epsilon = rnorm(n)
+
+# Generate outcome Y at time t=0
+Y_t0 <- 500 + 200*X + 500*A + epsilon
+
+# Generate outcome Y at time t=1
+Y_t1 <- 600 + 200*X + 500*A + 300*D + epsilon
+
+dat = rbind(data.frame(id = 1:n, A = A, X = X, D = D, Y = (Y_t0), Time = "T0"), 
+      data.frame(id = 1:n, A = A, X = X, D = D, Y = (Y_t1), Time = "T1"))
+dat
+
+dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
+```
+
+```{r}
+mod_lm = lm(Y ~ X + A + D + Time, dat)
+summary(mod_lm)
+```
+
+
+```{r}
+mod1 = lmer(Y ~ X + D + Time + (1 | id), dat)
+summary(mod1)
+```
+
+
+
+## trial 2
+
+
+```{r}
+# Load the required packages
+library(simstudy)
+library(dplyr)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the number of individuals and time points
+n <- 100 # Number of individuals
+t <- 10 # Number of time points
+
+# Define the treatment assignment probabilities
+p <- 0.5 # Probability of treatment assignment
+
+# Define the covariates and their coefficients
+covs <- c("x1", "x2", "x3")
+beta <- c(1, 2, 3)
+
+# Define the coefficient for the treatment variable
+beta_d <- 4
+
+# Define the coefficient for the unmeasured confounding variable affecting treatment assignment and outcome
+beta_a <- 2
+
+# Generate the covariate data
+cov_data <- data.frame(id = rep(1:n, each = t), time = rep(1:t, n))
+for (cov in covs) {
+  cov_data[[cov]] <- rep(rnorm(n, mean = 0, sd = 1), each = t)
+  cov_data[[cov]] <- cov_data[[cov]] * beta[match(cov, covs)]
+}
+
+# Generate the unmeasured confounding variable
+a_data <- data.frame(id = rep(1:n, each = t), time = rep(1:t, n) , a = rnorm(n, mean = 0, sd = 1) * beta_a)
+
+# Generate the treatment variable
+d_data <- data.frame(id = rep(1:n, each = t), time = rep(1:t, n))
+d_data$d <- ifelse(runif(n*t) <= p + a_data$a, 1, 0)
+
+# Generate the outcome variable
+y_data <- data.frame(id = rep(1:n, each = t), time = rep(1:t, n))
+y_data <- left_join(y_data, cov_data, by = c("id", "time"))
+y_data <- left_join(y_data, d_data, by = c("id", "time"))
+y_data$y <- 2 + 0.5 * y_data$x1 + 1.5 * y_data$x2 + 2 * y_data$x3 + beta_d * y_data$d + a_data$a + rnorm(n*t, sd = 2)
+
+# Convert the data to a pdata.frame object
+panel_data <- y_data %>%
+  mutate(id = as.factor(id), time = as.factor(time)) %>%
+  pdata.frame(index = c("id", "time"))
+
+# View the first few rows of the panel data
+head(panel_data)
+
+```
+
+
+
+##  trial 3
+
+$$
+\begin{align*}
+E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+A_i^{\prime} \gamma+\mathrm{X}_{i t} \delta \\
+Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+A_i^{\prime} \gamma+\mathrm{X}_{i t} \delta + \epsilon_{it} 
+\end{align*}
+$$
+
+```{r}
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the number of individuals and time points
+n <- 100 # Number of individuals
+t <- 10 # Number of time points
+
+# Define the treatment assignment probabilities
+p <- 0.5 # Probability of treatment assignment
+
+# Define the covariates and their coefficients
+covs <- c("x1", "x2", "x3")
+beta <- c(1, 2, 3)
+
+# Define the coefficient for the treatment variable
+beta_d <- 4
+
+# Define the coefficient for the unmeasured confounding variable affecting treatment assignment and outcome
+beta_a <- 2
+
+set.seed(123)
+
+# Number of individuals
+n <- 100
+
+# Unmeasured confounding for each individual
+A <- rnorm(n)
+
+# Covaraite for each individual
+X1 <- rnorm(n, mean = 5, sd = 10)
+X2 <- rnorm(n, mean = 10, sd = 10)
+X3 <- rnorm(n, mean = 15, sd = 10)
+
+# Treatment
+p = ifelse(A >= 1, 0.7, 0.5)
+D <- rbinom(n, 1, p)
+
+# Treatment
+p = ifelse(A >= 1, 0.7, 0.5)
+# p = abs(A) / max(abs(A))
+D <- rbinom(n, 1, 0.5)
+```
+
+
+
+```{r}
+# Set the seed for reproducibility
+set.seed(19991109)
+
+# Define the number of individuals and time points
+n <- 100 # Number of individuals
+t <- 2 # Number of time points
+
+delta <- 5
+gamma <- 3
+rho <- 8
+
+# Unmeasured confounding for each individual
+A <- rnorm(n)
+
+# Covaraite for each individual
+X <- rnorm(n)
+
+# Treatment
+p = ifelse(A >= 1, 0.75, 0.45)
+D <- rbinom(n, 1, p)
+
+D <- rbinom(n, 1, 0.5)
+```
+
+
+
+```{r}
+dat = expand_grid(data.frame(id = 1:n, A = A, X = X, D = D), Time = 1:t) %>% 
+  mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
+  mutate(Y  = ifelse(Time < 2, 
+                     (Time) + delta*X + gamma*A + epsilon,
+                     (Time)^2 + delta*X + gamma*A + rho*D + epsilon))
+
+# dat = expand_grid(data.frame(id = 1:n, A = A, X = X, D = D, epsilon), Time = 1:t) %>% 
+#   mutate(epsilon = rnorm(1, mean = 0, sd = 1)) %>% 
+#   mutate(Y  = ifelse(Time < 5, 
+#                      (Time)^2 + delta*X + gamma*A + epsilon,
+#                      (Time)^2 + delta*X + gamma*A + rho*D + epsilon))
+
+
+mean(dat$D)
+
+dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
+```
+
+$$
+\tau^{DID} = (\bar Y_{1, t+1} - \bar Y_{1, t}) - (\bar Y_{0, t+1} - \bar Y_{0, t})
+$$
+```{r}
+# DID estimator
+
+bar_Y_1_t2 = dat %>% filter(Time == 2, D == 1) %>% summarise(mean(Y))
+bar_Y_1_t1 = dat %>% filter(Time == 1, D == 1) %>% summarise(mean(Y))
+
+bar_Y_0_t2 = dat %>% filter(Time == 2, D == 0) %>% summarise(mean(Y))
+bar_Y_0_t1 = dat %>% filter(Time == 1, D == 0) %>% summarise(mean(Y))
+
+(bar_Y_1_t2 - bar_Y_1_t1) - (bar_Y_0_t2 - bar_Y_0_t1)
+```
+
+
+```{r}
+mod0 = lm(Y ~ D + A + X + factor(Time), dat)
+summary(mod0)
+
+mod01 = lm(Y ~ D + A + X, dat %>% filter(Time == 2))
+summary(mod01)
+```
+
+
+```{r}
+mod1 = lmer(Y ~ X + D + factor(Time) + (1 | id), dat)
+summary(mod1)
+```
+
