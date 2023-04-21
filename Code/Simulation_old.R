@@ -42,7 +42,7 @@ dat = expand_grid(data.frame(id = 1:n, A = A, X = X, D = D), Time = 1:t) %>%
 
 mean(dat$D)
 
-dat %>% ggplot(aes(x = factor(Time), y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
+dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
 
 
 
@@ -116,7 +116,7 @@ dat = expand_grid(data.frame(id = 1:n, A = A, X = X, D = D), Time = 1:t) %>%
 
 mean(dat$D)
 
-dat %>% ggplot(aes(x = factor(Time), y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
+dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
 
 
 
