@@ -7,7 +7,7 @@ library(magrittr)
 set.seed(19991109, kind = "L'Ecuyer-CMRG")
 
 # Initialize parallel backend, adjust as needed
-cl <- makeCluster(20)
+cl <- makeCluster(8)
 
 # Register the parallel backend
 registerDoParallel(cl)
@@ -102,6 +102,8 @@ bias_result <- tidyr::expand_grid(n, t, delta, gamma, rho, confound_treatment) %
   do(bias_mutate(.)) %>% separate(result, c("DID_bias", "OLS_bias", "FE_bias"), " ", convert = TRUE)
 
 
+save(bias_result, file = "bias_result.Rdata")
+
 
 bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to = "Bias_Type", values_to = "Bias") %>% 
   ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + facet_wrap(~confound_treatment)
@@ -109,6 +111,7 @@ bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to
 
 bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to = "Bias_Type", values_to = "Bias") %>% 
   ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + facet_wrap(~confound_treatment)
+
 
 
 

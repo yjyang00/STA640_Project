@@ -1,0 +1,51 @@
+---
+title: "Result_analysis"
+author: "Yicheng Shen"
+date: "2023-04-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+ggplot2::theme_set(ggplot2::theme_bw())
+knitr::opts_chunk$set(out.width = "100%", fig.align = 'center')
+```
+
+
+```{r}
+load("bias_result.Rdata")
+```
+
+```{r}
+bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to = "Bias_Type", values_to = "Bias") %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + facet_wrap(~confound_treatment)
+
+
+bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to = "Bias_Type", values_to = "Bias") %>% 
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + facet_wrap(~confound_treatment)
+```
+
+
+
+```{r}
+
+bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type!="OLS_bias") %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + facet_wrap(~confound_treatment)
+
+
+bias_result %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type!="OLS_bias") %>% 
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + facet_wrap(~confound_treatment)
+```
+
+
+
+
+
+
+
+
+
+
