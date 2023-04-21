@@ -10,7 +10,6 @@ cl <- makeCluster(8)
 registerDoParallel(cl)
 
 
-
 S = 5000
 result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% {
   library(tidyverse)
