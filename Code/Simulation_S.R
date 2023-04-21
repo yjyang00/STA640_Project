@@ -10,7 +10,7 @@ cl <- makeCluster(8)
 registerDoParallel(cl)
 
 
-S = 5000
+S = 1000
 result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% {
   library(tidyverse)
   library(lme4)
@@ -75,7 +75,7 @@ colMeans(result)
 
 ### simulation 2
 
-S = 5000
+S = 1000
 result2 = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% {
   library(tidyverse)
   library(lme4)
@@ -131,8 +131,8 @@ result2 = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar%
   return(res)
 }
 
-colMeans(result2)
 colnames(result2) = c("DID_bias", "OLS_bias", "FE_bias")
+colMeans(result2)
 
 # save(result2, file = "result2.RData")
 
@@ -141,7 +141,7 @@ colnames(result2) = c("DID_bias", "OLS_bias", "FE_bias")
 
 ### simulation 3
 
-S = 5000
+S = 1000
 result3 = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% {
   library(tidyverse)
   library(lme4)
@@ -197,15 +197,15 @@ result3 = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar%
   return(res)
 }
 
-colMeans(result3)
 colnames(result3) = c("DID_bias", "OLS_bias", "FE_bias")
+colMeans(result3)
 
 # save(result3, file = "result3.RData")
 
 
-load("result.RData")
-load("result2.RData")
-load("result3.RData")
+# load("result.RData")
+# load("result2.RData")
+# load("result3.RData")
 colMeans(result)
 colMeans(result2)
 colMeans(result3)

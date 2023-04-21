@@ -75,7 +75,12 @@ summ_lmer$coefficients[4,]
 
 
 
+
+
+
 ###### Multiple timepoints
+
+set.seed(2023)
 
 n <- 100 # Number of individuals
 t <- 10 # Number of time points
@@ -132,10 +137,6 @@ dat = dat %>% mutate(time = factor(Time)) %>%
 
 
 ## OLS
-mod = lm(Y ~ D + A + X, dat %>% filter(Time == t_treat))
-summary(mod)
-
-
 mod0 = lm(Y ~ A + X + time + D_it, dat)
 summary(mod0)
 mod0$coefficients
