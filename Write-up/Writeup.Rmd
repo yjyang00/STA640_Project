@@ -1,0 +1,120 @@
+---
+title: "Demystifying the Relationship Between Fixed/Random Effects and Unmeasured Confounding in Panel Data Analysis"
+author: "Yicheng Shen, Yanjiao Yang, Huiyin Lin"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+header-includes:
+    - \setlength{\parskip}{0em}
+    - \setlength{\parindent}{2em}
+    - \usepackage{indentfirst}
+    - \usepackage{float}
+    - \usepackage{setspace}\onehalfspacing
+output: 
+  pdf_document: 
+    extra_dependencies: ["float"]
+    number_sections: true
+bibliography: SYL.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, cache = F, warning = F, message = F)
+library(tidyverse)
+library(lme4)
+library(ggplot2)
+library(gridExtra)
+library(kableExtra)
+library(GGally)
+ggplot2::theme_set(ggplot2::theme_bw())
+knitr::opts_chunk$set(fig.align = 'center')
+knitr::opts_chunk$set(fig.pos = "H")
+```
+
+
+\section{Introduction}
+
+Panel data analysis is a widely used statistical tool in econometrics to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the interpretation of the results. 
+Fixed and random effects models frequently emerge in panel data analysis to account for confounding variables that are time-invariant [@gunasekara2014fixed] or time-varying [@li2011nonpara; @ahn2013panel]. 
+A common belief among econometricians is that fixed and random effects models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
+In this research paper, we aim to explore the relationship between fixed/random effects and time-invariant unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.
+
+Our simulation suggests that fixed/random effects can remedy the issue of unmeasured confounding to a certain extent, but there are still systematic bias resulting from the relationship between unmeasured confounding and the treatment assignment. **[more stuff here]**
+
+
+
+
+\section{Background}
+
+In typical observational studies, failing to capture significant unmeasured confounding gives rise to biased estimates of treatment effects, which compels practitioners to develop methods of assessing and handling uncontrolled confounding [@vanderweele2011unmeasured]. 
+The question of whether fixed/random effects models can account for unmeasured confounding in panel data analysis has been the subject of much debate in the econometrics literature. 
+A number of studies have explored this issue from different angles and with varying degrees of empirical evidence.
+
+One line of research has focused on theoretical arguments for why fixed/random effects models might be effective at absorbing unmeasured confounding. 
+For example, @angrist2009mostly discuss the strategies that use data with a time or cohort dimension to control for unobserved-but-fixed omitted variables.
+@hausman1981panel argue that fixed effects models can control for the time-invariant confounders by essentially differencing them out, while random effects models can account for time-varying confounders that are uncorrelated with the fixed effects. More recently, Wooldridge (2010) has suggested that fixed effects models can be viewed as a form of quasi-experimental design that mimics a randomized controlled trial, and thus can address the unobserved component to the extent that such designs do.
+
+However, empirical evidence for the effectiveness of fixed/random effects models at absorbing unmeasured confounding has been mixed. Some studies have found that these models can indeed account for unmeasured confounding to some extent. For example, Bell and Jones (2015) used a simulation study to show that fixed effects models can provide unbiased estimates of treatment effects even in the presence of unobserved heterogeneity. Similarly, Chandrasekhar and Zhan (2014) found that random effects models can help to address omitted variable bias in studies of firm-level productivity.
+
+Other studies, however, have challenged the notion that fixed/random effects models can fully account for unmeasured confounding. For example, Mundlak (1978) argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot estimate time-invariant covariates. Similarly, Bell and Jones (2015) noted that while fixed effects models can provide reasonable estimates of treatment effects, they may still suffer from omitted variable bias if the unobserved confounding variable is correlated with the treatment.
+
+
+\section{Method}
+
+
+We presume that specifying a random effect (intercept) for every individual in the study is an appropriate method to address unmeasured confounding, $A$. 
+
+```{r, echo=F, out.width="50%"}
+knitr::include_graphics("Image/DAG.png")
+```
+
+
+Our data generation process (DGP) uses the following model specifications:
+$$
+\begin{aligned}
+E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} 
+\end{aligned}
+$$
+
+Difference-in-difference (DID) estimator
+$$
+\tau^{DID} = (\bar Y_{1, t+1} - \bar Y_{1, t}) - (\bar Y_{0, t+1} - \bar Y_{0, t})
+$$
+
+
+Regression model
+$$
+\begin{aligned}
+Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} 
+\end{aligned}
+$$
+
+Fixed effects model
+$$
+\begin{aligned}
+Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t}+ \epsilon_{it} \\
+\alpha_i &\equiv \alpha+ \gamma A_i\\
+Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} 
+\end{aligned}
+$$
+
+
+\section{Result}
+
+
+
+\section{Discussion}
+
+
+Limitation and further direction: 
+
+Time-variant confounding? 
+
+More time points?
+
+
+Overall, the literature suggests that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be necessary in certain cases to fully address this issue.
+
+
+
+\newpage
+
+\section{Reference}
+

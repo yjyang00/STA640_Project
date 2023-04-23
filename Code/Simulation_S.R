@@ -27,6 +27,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   D <- rbinom(n, 1, p)
   
   dat = tidyr::expand_grid(data.frame(id = 1:n, A = A, X = X, D = D), Time = 1:t) %>% 
+    mutate(id = factor(id)) %>% 
     mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
     mutate(Y  = ifelse(Time < 2, 
                        (Time) + delta*X + gamma*A + epsilon,
@@ -52,12 +53,12 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   # OLS
   mod0 = lm(Y ~ X + time + D_it, dat)
   # summary(mod0)
-  OLS_bias = (mod0$coefficients[4] - rho) %>% as.numeric()
+  OLS_bias = (tail(mod0$coefficients, 1) - rho) %>% as.numeric()
   
   
-  # FE: allow different intercepts for each id
-  mod1 = lme4::lmer(Y ~ time + X + D_it + (1 | id), dat)
-  summ_lmer = summary(mod1)
+  # random intercept
+  mod2 = lme4::lmer(Y ~ X + time + D_it + (1 | id), dat)
+  summ_lmer = summary(mod2)
   # summ_lmer
   FE_bias = (summ_lmer$coefficients[4,1] - rho) %>% as.numeric()
   
