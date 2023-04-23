@@ -69,7 +69,8 @@ knitr::include_graphics("Image/DAG.png")
 Our data generation process (DGP) uses the following model specifications:
 $$
 \begin{aligned}
-E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} 
+E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\
+Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t}+ \epsilon_{it} \\
 \end{aligned}
 $$
 
@@ -89,9 +90,17 @@ $$
 Fixed effects model
 $$
 \begin{aligned}
-Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t}+ \epsilon_{it} \\
 \alpha_i &\equiv \alpha+ \gamma A_i\\
 Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} 
+\end{aligned}
+$$
+
+Random effects model
+$$
+\begin{aligned}
+\alpha_i &\equiv \alpha+ \gamma A_i\\
+Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} \\
+& \text{where } \alpha_i \sim N(\mu_i, \sigma^2)
 \end{aligned}
 $$
 
@@ -109,8 +118,10 @@ Time-variant confounding?
 
 More time points?
 
+Coefficients of latent variable?
 
-Overall, the literature suggests that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be necessary in certain cases to fully address this issue.
+
+Overall, the literature suggests that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be more necessary in certain cases to fully address this issue.
 
 
 
