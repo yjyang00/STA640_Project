@@ -83,7 +83,6 @@ bias_sim = function(S = 100, n, t, delta, gamma, rho, confound_treatment){
 
 
 
-
 n <- 100 
 t <- 2 
 delta <- 5

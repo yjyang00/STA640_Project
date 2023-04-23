@@ -35,6 +35,8 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
                        (Time)^2 + delta*X + gamma*A + epsilon,
                        (Time)^2 + delta*X + gamma*A + rho*D + epsilon))
   
+  # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
+
   
   # DID estimator
   bar_Y_1_t2 = dat %>% filter(Time == t_treat, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
@@ -55,26 +57,32 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   # OLS
   mod0 = lm(Y ~ X + time + D_it, dat)
   # summary(mod0)
+  # tail(confint(mod0),1)
   OLS_est = tail(mod0$coefficients, 1)
   OLS_bias = (OLS_est - rho) %>% as.numeric()
 
-  # individual-level intercept
+  # fixed-effects model
   mod1 = lm(Y ~ id + X + time + D_it, dat)
+  # summary(mod1)
+  # tail(confint(mod1),1)
   FE_est = tail(mod1$coefficients, 1)
   FE_bias = (FE_est - rho) %>% as.numeric()
   
-  # random intercept
+  # random-effects model (with random intercept)
   mod2 = lme4::lmer(Y ~ X + time + D_it + (1 | id), dat)
   summ_lmer = summary(mod2)
   # summ_lmer
+  # tail(confint(mod2),1)
   RE_est = tail(summ_lmer$coefficients,1)[1]
   RE_bias = (RE_est - rho) %>% as.numeric()
   
-  res = c(DID_bias, OLS_bias, FE_bias, RE_bias)
   
-  return(res)
+  res_est = c(DID_est, OLS_est, FE_est, RE_est)
+  res_bias = c(DID_bias, OLS_bias, FE_bias, RE_bias)
+  
+  return(c(res_est, res_bias))
 }
 
-colnames(result) = c("DID_bias", "OLS_bias", "FE_bias", "RE_bias")
+colnames(result) = c("DID_est", "OLS_est", "FE_est", "RE_est", "DID_bias", "OLS_bias", "FE_bias", "RE_bias")
 colMeans(result)
 
