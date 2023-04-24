@@ -33,7 +33,7 @@ knitr::opts_chunk$set(fig.pos = "H")
 
 Panel data analysis is a widely used statistical tool in econometrics to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the interpretation of the results. 
 Fixed and random effects models frequently emerge in panel data analysis to account for confounding variables that are time-invariant [@gunasekara2014fixed] or time-varying [@li2011nonpara; @ahn2013panel]. 
-A common belief among econometricians is that fixed and random effects models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
+A common belief among econometricians is that fixed effects (FE) or random effects (RE) models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
 In this research paper, we aim to explore the relationship between fixed/random effects and time-invariant unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.
 
 Our simulation suggests that fixed/random effects can remedy the issue of unmeasured confounding to a certain extent, but there are still systematic bias resulting from the relationship between unmeasured confounding and the treatment assignment. **[more stuff here]**
@@ -49,11 +49,15 @@ A number of studies have explored this issue from different angles and with vary
 
 One line of research has focused on theoretical arguments for why fixed/random effects models might be effective at absorbing unmeasured confounding. 
 For example, @angrist2009mostly discuss the strategies that use data with a time or cohort dimension to control for unobserved-but-fixed omitted variables.
-@hausman1981panel argue that fixed effects models can control for the time-invariant confounders by essentially differencing them out, while random effects models can account for time-varying confounders that are uncorrelated with the fixed effects. More recently, Wooldridge (2010) has suggested that fixed effects models can be viewed as a form of quasi-experimental design that mimics a randomized controlled trial, and thus can address the unobserved component to the extent that such designs do.
+@hausman1981panel argue that fixed effects models can control for the time-invariant confounders by essentially differencing them out, while random effects models can account for time-varying confounders that are uncorrelated with the fixed effects. More recently, @wooldridge2010econometric has suggested that fixed effects models can be viewed as a form of quasi-experimental design that mimics a randomized controlled trial, and thus can address the unobserved component to the extent that such designs do.
 
-However, empirical evidence for the effectiveness of fixed/random effects models at absorbing unmeasured confounding has been mixed. Some studies have found that these models can indeed account for unmeasured confounding to some extent. For example, Bell and Jones (2015) used a simulation study to show that fixed effects models can provide unbiased estimates of treatment effects even in the presence of unobserved heterogeneity. Similarly, Chandrasekhar and Zhan (2014) found that random effects models can help to address omitted variable bias in studies of firm-level productivity.
+Other studies have challenged the notion that fixed/random effects models can fully absorbing unmeasured confounding. For example, @mundlak1978pooling argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot estimate time-invariant covariates. 
+@hazlett2022understanding point out that random effect estimates in multilevel models are equivalent to fixed effects estimates that have been shrunken through a regularization process. When the source of unmeasured confounding is at the group-level, the FE approach could unbiasedly estimates treatment effects, but with poor estimates of standard errors. Bias emerges in random effects models because their variables are not “allowed” to adjust for confounding as intended and thus fails to remove the unmeasured confounding.
+Furthermore, @bell2015explaining note that while fixed effects models can provide reasonable estimates of treatment effects, they may still suffer from omitted variable bias if the unobserved confounding variable is correlated with the time-varying variables.
 
-Other studies, however, have challenged the notion that fixed/random effects models can fully account for unmeasured confounding. For example, Mundlak (1978) argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot estimate time-invariant covariates. Similarly, Bell and Jones (2015) noted that while fixed effects models can provide reasonable estimates of treatment effects, they may still suffer from omitted variable bias if the unobserved confounding variable is correlated with the treatment.
+Therefore, the effectiveness of fixed/random effects models in accounting for unmeasured confounding and obtaining unbiased estimates of treatment effects in panel data analysis remains a topic of ongoing research and debate.
+As such, our projects seeks to explore the trends of potential bias when applying fixed/random effects models in the face of unmeasured confounding.
+
 
 
 \section{Method}
@@ -95,7 +99,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
-Random effects model
+Random intercept model
 $$
 \begin{aligned}
 \alpha_i &\equiv \alpha+ \gamma A_i\\
@@ -103,6 +107,13 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 & \text{where } \alpha_i \sim N(\mu_i, \sigma^2)
 \end{aligned}
 $$
+
+
+\subsection{Continuous Case}
+
+
+\subsection{Binary Case}
+
 
 
 \section{Result}
@@ -118,14 +129,14 @@ Time-variant confounding?
 
 More time points?
 
-Coefficients of latent variable?
+Estimated coefficients of latent variable?
 
 
 Overall, the literature suggests that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be more necessary in certain cases to fully address this issue.
 
 
 
-\newpage
+<!-- \newpage -->
 
 \section{Reference}
 

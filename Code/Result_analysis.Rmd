@@ -66,13 +66,17 @@ bias_result_uniform %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias"), 
 
 ```{r}
 load("bias_result_full.RData")
+bias_result_full$confound_treatment = factor(bias_result_full$confound_treatment)
+levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_treatment)=="Uniform"] <- "Very Strong"
+
+
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
-  filter(rho == 5) %>%
+  filter(rho == 8) %>%
   ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
 
 
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
-  filter(gamma == 5) %>%
+  filter(gamma == 8) %>%
   ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
 
 
