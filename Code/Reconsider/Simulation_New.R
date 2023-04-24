@@ -62,14 +62,14 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   OLS_bias = (OLS_est - rho) %>% as.numeric()
 
   # fixed-effects model
-  mod1 = lm(Y ~ id + X + time + D_it, dat)
+  mod1 = lm(Y ~ id + X + time + D_it - 1, dat)
   # summary(mod1)
   # tail(confint(mod1),1)
   FE_est = tail(mod1$coefficients, 1)
   FE_bias = (FE_est - rho) %>% as.numeric()
   
   # random-effects model (with random intercept)
-  mod2 = lme4::lmer(Y ~ X + time + D_it + (1 | id), dat)
+  mod2 = lme4::lmer(Y ~ X + time + D_it + (1 | id) - 1, dat)
   summ_lmer = summary(mod2)
   # summ_lmer
   # tail(confint(mod2),1)

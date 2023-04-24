@@ -48,14 +48,14 @@ Our simulation suggests that fixed/random effects can remedy the issue of unmeas
 \section{Background}
 
 In typical observational studies, failing to capture significant unmeasured confounding gives rise to biased estimates of treatment effects, which compels practitioners to develop methods of assessing and handling uncontrolled confounding [@vanderweele2011unmeasured]. 
-The question of whether fixed/random effects models can account for unmeasured confounding in panel data analysis has been the subject of much debate in the econometrics literature. 
+The question of whether fixed/random effects models can account for unmeasured confounding in panel data analysis has been the subject of much debate particuarly in the econometrics literature. 
 A number of studies have explored this issue from different angles and with varying degrees of empirical evidence.
 
 One line of research has focused on theoretical arguments for why fixed/random effects models might be effective at absorbing unmeasured confounding. 
 For example, @angrist2009mostly discuss the strategies that use data with a time or cohort dimension to control for unobserved-but-fixed omitted variables.
 @hausman1981panel argue that fixed effects models can control for the time-invariant confounders by essentially differencing them out, while random effects models can account for time-varying confounders that are uncorrelated with the fixed effects. More recently, @wooldridge2010econometric has suggested that fixed effects models can be viewed as a form of quasi-experimental design that mimics a randomized controlled trial, and thus can address the unobserved component to the extent that such designs do.
 
-Other studies have challenged the notion that fixed/random effects models can fully absorbing unmeasured confounding. For example, @mundlak1978pooling argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot estimate time-invariant covariates. 
+Other scholars have challenged the notion that fixed/random effects models can fully absorbing unmeasured confounding. For example, @mundlak1978pooling once argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot estimate time-invariant covariates. 
 @hazlett2022understanding point out that random effect estimates in multilevel models are equivalent to fixed effects estimates that have been shrunken through a regularization process. When the source of unmeasured confounding is at the group-level, the FE approach could unbiasedly estimates treatment effects, but with poor estimates of standard errors. Bias emerges in random effects models because their variables are not “allowed” to adjust for confounding as intended and thus fails to remove the unmeasured confounding.
 Furthermore, @bell2015explaining note that while fixed effects models can provide reasonable estimates of treatment effects, they may still suffer from omitted variable bias if the unobserved confounding variable is correlated with the time-varying variables.
 
@@ -66,8 +66,7 @@ As such, our projects seeks to explore the trends of potential bias when applyin
 
 \section{Method}
 
-
-We presume that specifying a random effect (intercept) for every individual in the study is an appropriate method to address unmeasured confounding, $A$. 
+We presume that specifying an intercept for every individual in the study is an appropriate method to address unmeasured confounding, $A$. 
 
 ```{r, echo=F, out.width="50%"}
 knitr::include_graphics("Image/DAG.png")
@@ -84,20 +83,37 @@ Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_
 \end{aligned}
 $$
 
-Difference-in-difference (DID) estimator
+
+In our DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individualis simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. 
+
+The coefficient for covariate, $\gamma$, is chosen arbitrarily as 5. 
+
+
+
+**Difference-in-difference (DID) estimator**
+
+
+
 $$
 \tau^{DID} = (\bar Y_{1, t+1} - \bar Y_{1, t}) - (\bar Y_{0, t+1} - \bar Y_{0, t})
 $$
 
 
-Regression model
+
+
+**Regression model**
+
 $$
 \begin{aligned}
 Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} 
 \end{aligned}
 $$
 
-Fixed effects model
+
+
+
+**Fixed effects model**
+
 $$
 \begin{aligned}
 \alpha_i &\equiv \alpha+ \gamma A_i\\
@@ -105,7 +121,15 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
+
+
+
+**Random effects model**
+
 Our random effects model is essentially a random intercept model. 
+
+We use `lmer` from the `lme4` package to fit the random intercept model. 
+
 $$
 \begin{aligned}
 \alpha_i &\equiv \alpha+ \gamma A_i\\
@@ -115,8 +139,12 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 $$
 
 
+
 \subsection{Binary Case}
 
+fit `glm`
+
+RE: `glmer` from the `lme4`
 
 
 \section{Result}
@@ -149,6 +177,7 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
   ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line()  + facet_wrap(~confound_treatment) + labs(x = expression(rho))
 )
 ```
+
 
 
 \section{Discussion}

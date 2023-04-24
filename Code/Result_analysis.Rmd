@@ -139,3 +139,17 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
   filter(Bias_Type %in% c("FE_bias","RE_bias"), gamma == 10) %>%   ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
 ```
 
+```{r}
+correlation = c()
+for (i in 1:1000)
+{
+  correlation[i] = cor(rnorm(100),rnorm(100))
+}
+mean(abs(correlation))
+```
+
+
+
+
+
+
