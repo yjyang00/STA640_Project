@@ -26,6 +26,10 @@ library(GGally)
 ggplot2::theme_set(ggplot2::theme_bw())
 knitr::opts_chunk$set(fig.align = 'center')
 knitr::opts_chunk$set(fig.pos = "H")
+
+load("bias_result_full.RData")
+bias_result_full$confound_treatment = factor(bias_result_full$confound_treatment)
+levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_treatment)=="Uniform"] <- "Very Strong"
 ```
 
 
@@ -70,6 +74,8 @@ knitr::include_graphics("Image/DAG.png")
 ```
 
 
+\subsection{Continuous Case}
+
 Our data generation process (DGP) uses the following model specifications:
 $$
 \begin{aligned}
@@ -99,7 +105,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
-Random intercept model
+Our random effects model is essentially a random intercept model. 
 $$
 \begin{aligned}
 \alpha_i &\equiv \alpha+ \gamma A_i\\
@@ -109,15 +115,40 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 $$
 
 
-\subsection{Continuous Case}
-
-
 \subsection{Binary Case}
 
 
 
 \section{Result}
 
+In Figure \ref{fig:bias_with_ols}, we show that 
+
+```{r With OLS, fig.cap="\\label{fig:bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods.",fig.height=6, fig.width=11}
+gridExtra::grid.arrange(
+bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(rho == 5) %>%
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
+,
+bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(gamma == 5) %>%
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(rho))
+)
+```
+
+
+In Figure \ref{fig:bias_without_ols}, we show that 
+
+```{r Without OLS, fig.cap="\\label{fig:bias_without_ols} Compareing average bias of estimated treatment effects from DID, FE, and RE models.",fig.height=6, fig.width=11}
+gridExtra::grid.arrange(
+bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", rho == 5) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
+,
+bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", gamma == 5) %>%
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line()  + facet_wrap(~confound_treatment) + labs(x = expression(rho))
+)
+```
 
 
 \section{Discussion}
