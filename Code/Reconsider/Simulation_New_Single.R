@@ -79,10 +79,9 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   
   res_est = c(DID_est, OLS_est, FE_est, RE_est)
   res_bias = c(DID_bias, OLS_bias, FE_bias, RE_bias)
-  
+  c(res_est, res_bias)
   return(c(res_est, res_bias))
 }
 
 colnames(result) = c("DID_est", "OLS_est", "FE_est", "RE_est", "DID_bias", "OLS_bias", "FE_bias", "RE_bias")
 colMeans(result)
-

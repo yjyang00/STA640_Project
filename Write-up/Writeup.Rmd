@@ -56,7 +56,7 @@ For example, @angrist2009mostly discuss the strategies that use data with a time
 @hausman1981panel argue that fixed effects models can control for the time-invariant confounders by essentially differencing them out, while random effects models can account for time-varying confounders that are uncorrelated with the fixed effects. More recently, @wooldridge2010econometric has suggested that fixed effects models can be viewed as a form of quasi-experimental design that mimics a randomized controlled trial, and thus can address the unobserved component to the extent that such designs do.
 
 Other scholars have challenged the notion that fixed/random effects models can fully absorbing unmeasured confounding. For example, @mundlak1978pooling once argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot estimate time-invariant covariates. 
-@hazlett2022understanding point out that random effect estimates in multilevel models are equivalent to fixed effects estimates that have been shrunken through a regularization process. When the source of unmeasured confounding is at the group-level, the FE approach could unbiasedly estimates treatment effects, but with poor estimates of standard errors. Bias emerges in random effects models because their variables are not “allowed” to adjust for confounding as intended and thus fails to remove the unmeasured confounding.
+@hazlett2022understanding point out that random effect estimates in multilevel models are equivalent to fixed effects estimates that have been shrunken through a regularization process. When the source of unmeasured confounding is at the group-level, the FE approach could unbiasedly estimates treatment effects, but with poor estimates of standard errors. Bias takes place in random effects models because their variables are not “allowed” to adjust for confounding as intended and thus fails to remove the unmeasured confounding.
 Furthermore, @bell2015explaining note that while fixed effects models can provide reasonable estimates of treatment effects, they may still suffer from omitted variable bias if the unobserved confounding variable is correlated with the time-varying variables.
 
 Therefore, the effectiveness of fixed/random effects models in accounting for unmeasured confounding and obtaining unbiased estimates of treatment effects in panel data analysis remains a topic of ongoing research and debate.
@@ -92,6 +92,7 @@ The coefficient for covariate, $\gamma$, is chosen arbitrarily as 5.
 
 **Difference-in-difference (DID) estimator**
 
+The Difference-in-Differences (DID) method is a quasi-experimental approach used to estimate the causal effect of a treatment in panel data.
 
 
 $$
@@ -126,15 +127,15 @@ $$
 
 **Random effects model**
 
-Our random effects model is essentially a random intercept model. 
+Our random effects model is essentially a random intercept (RI) model. The argument that RI could account for unmeasured confounding is theoretically problematic due to its modeling specification. 
+In particular, bias emerges when the random effects are correlated with the treatment. Because the group-specific intercepts in a RI model are regularized, they do not achieve the values that would “fully absorb” group-specific confounding, leaving components unexplained that can instead be captured by FE [@hazlett2022understanding]. 
 
 We use `lmer` from the `lme4` package to fit the random intercept model. 
 
 $$
 \begin{aligned}
-\alpha_i &\equiv \alpha+ \gamma A_i\\
 Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} \\
-& \text{where } \alpha_i \sim N(\mu_i, \sigma^2)
+& \text{where } \alpha_i | D, X \overset{i.i.d}\sim N(0, \sigma^2)
 \end{aligned}
 $$
 
