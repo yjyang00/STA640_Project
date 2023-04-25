@@ -104,8 +104,8 @@ n <- 100
 t <- 10 
 t_treat <- 5
 delta <- 5
-gamma <- 1:20
-rho <- 1:20
+gamma <- 0:10
+rho <- 1:10
 confound_treatment = c("Small","Strong","Uniform")
 
 

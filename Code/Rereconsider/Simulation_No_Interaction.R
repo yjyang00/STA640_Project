@@ -68,14 +68,14 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
     # summary(mod0)
     # tail(confint(mod0),1)
     OLS_est = tail(mod0$coefficients, 1)
-    OLS_bias = abs(OLS_est - rho) %>% as.numeric()
+    OLS_bias = (OLS_est - rho) %>% as.numeric()
     
     # fixed-effects model
     mod1 = lm(Y ~ id + X_it + time + D_it - 1, dat)
     # summary(mod1)
     # tail(confint(mod1),1)
     FE_est = tail(mod1$coefficients, 1)
-    FE_bias = abs(FE_est - rho) %>% as.numeric()
+    FE_bias = (FE_est - rho) %>% as.numeric()
     
     # random-effects model (with random intercept)
     mod2 = lme4::lmer(Y ~ X_it + time + D_it + (1 | id) - 1, dat)
@@ -83,7 +83,7 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
     # summ_lmer
     # tail(confint(mod2),1)
     RE_est = tail(summ_lmer$coefficients,1)[1]
-    RE_bias = abs(RE_est - rho) %>% as.numeric()
+    RE_bias = (RE_est - rho) %>% as.numeric()
     
     
     res_est = c(DID_est, OLS_est, FE_est, RE_est)
@@ -111,7 +111,7 @@ confound_treatment = c("Small","Strong","Uniform")
 
 # Define a function to be applied in parallel
 bias_mutate <- function(df) {
-  df %>%  mutate(result = panel_bias_sim(S = 100, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
+  df %>%  mutate(result = panel_bias_sim(S = 50, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
 }
 
 bias_result_no_interaction <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rho, phi, confound_treatment) %>% 
@@ -121,3 +121,24 @@ bias_result_no_interaction <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rh
 
 
 # save(bias_result_no_interaction, file = "bias_result_no_interaction.RData")
+
+
+
+bias_result_no_interaction$confound_treatment = factor(bias_result_no_interaction$confound_treatment)
+levels(bias_result_no_interaction$confound_treatment)[levels(bias_result_no_interaction$confound_treatment)=="Uniform"] <- "Very Strong"
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(rho == 4) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(gamma == 4) %>% 
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", rho == 4) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", gamma == 4) %>%
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)

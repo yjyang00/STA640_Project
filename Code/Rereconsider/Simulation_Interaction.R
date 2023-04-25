@@ -27,17 +27,17 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
     
     if (confound_treatment == "Small"){
       A <- rnorm(n)
-      p = ifelse(A >= 1, 0.55, 0.45)
+      p = ifelse(A >= 0, 0.55, 0.45)
       D <- rbinom(n, 1, p)
     }
     
     if (confound_treatment == "Strong"){
       A <- rnorm(n)
-      p = ifelse(A >= 1, 0.7, 0.3)
+      p = ifelse(A >= 0, 0.7, 0.3)
       D <- rbinom(n, 1, p)
     }
     
-    if (confound_treatment == "Uniform"){
+    if (confound_treatment == "Very Strong"){
       A <- runif(n)
       p = A
       D <- rbinom(n, 1, A)
@@ -66,30 +66,32 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
     # OLS
     mod0 = lm(Y ~ X_it + time + D_it, dat)
     # summary(mod0)
-    # tail(confint(mod0),1)
     OLS_est = tail(mod0$coefficients, 1)
     OLS_bias = (OLS_est - rho) %>% as.numeric()
+    OLS_CI = tail(confint(mod0),1)[1] < rho & rho < tail(confint(mod0),1)[2]
     
     # fixed-effects model
     mod1 = lm(Y ~ id + X_it + time + D_it - 1, dat)
     # summary(mod1)
-    # tail(confint(mod1),1)
     FE_est = tail(mod1$coefficients, 1)
     FE_bias = (FE_est - rho) %>% as.numeric()
+    FE_CI = tail(confint(mod1),1)[1] < rho & rho < tail(confint(mod1),1)[2]
     
     # random-effects model (with random intercept)
     mod2 = lme4::lmer(Y ~ X_it + time + D_it + (1 | id) - 1, dat)
     summ_lmer = summary(mod2)
     # summ_lmer
-    # tail(confint(mod2),1)
     RE_est = tail(summ_lmer$coefficients,1)[1]
     RE_bias = (RE_est - rho) %>% as.numeric()
+    RE_ci =  tail(confint(mod2, method="Wald"),1)
+    RE_CI = RE_ci[1] < rho & rho < RE_ci[2]
     
     
     res_est = c(DID_est, OLS_est, FE_est, RE_est)
     res_bias = c(DID_bias, OLS_bias, FE_bias, RE_bias)
-    # c(res_est, res_bias)
-    return(c(res_est, res_bias))
+    CI_capture = c(OLS_CI, FE_CI, RE_CI)
+    # c(res_est, res_bias, CI_capture)
+    return(c(res_est, res_bias, CI_capture))
     
   }
   
@@ -99,25 +101,32 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
 
 
 
-n <- 100 
+n <- 50 
 t <- 10 
 t_treat <- 5
 delta <- 5
-gamma <- (1:10)*2
-rho <- (1:10)*2
-phi = 3
-confound_treatment = c("Small","Strong","Uniform")
+gamma <- 5
+rho <- 5
+phi = 0:10
+confound_treatment = c("Small","Strong","Very Strong")
 
 
 # Define a function to be applied in parallel
 bias_mutate <- function(df) {
-  df %>%  mutate(result = panel_bias_sim(S = 1000, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
+  df %>%  mutate(result = panel_bias_sim(S = 300, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
 }
 
 bias_result_interaction <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rho, phi, confound_treatment) %>% 
   group_by(n, t, t_treat, delta, gamma, rho, phi, confound_treatment) %>% 
   do(bias_mutate(.)) %>% separate(result, c("DID_est", "OLS_est", "FE_est", "RE_est",
-                                            "DID_bias", "OLS_bias", "FE_bias", "RE_bias"), " ", convert = TRUE)
+                                            "DID_bias", "OLS_bias", "FE_bias", "RE_bias",
+                                            "OLS_CI", "FE_CI", "RE_CI"), " ", convert = TRUE)
 
 
 # save(bias_result_interaction, file = "bias_result_interaction.RData")
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_CI", "FE_CI", "RE_CI"), names_to = "Bias_Type", values_to = "Bias") %>%
+  ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)

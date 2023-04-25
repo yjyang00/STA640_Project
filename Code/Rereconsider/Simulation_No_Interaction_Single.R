@@ -21,7 +21,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   delta <- 5
   gamma <- 3
   rho <- 8
-  phi = 2
+  phi = 0
   
   A <- rnorm(n)
   X <- runif(n, 0, 10)
@@ -41,10 +41,10 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
     mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
     mutate(D_it = D * Time_to_treat) %>% 
     mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
-    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*A*D_it + epsilon)
+    mutate(Y = (Time)^2 + gamma*A + rho*D_it + epsilon)
   
   # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_line() + facet_wrap(~factor(D))
-
+  
   # DID estimator
   bar_Y_1_t2 = dat %>% filter(Time == t_treat, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
   bar_Y_1_t1 = dat %>% filter(Time == t_treat-1, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
@@ -62,7 +62,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   OLS_est = tail(mod0$coefficients, 1)
   OLS_bias = (OLS_est - rho) %>% as.numeric()
   OLS_CI = tail(confint(mod0),1)[1] < rho & rho < tail(confint(mod0),1)[2]
-
+  
   # fixed-effects model
   mod1 = lm(Y ~ id + X_it + time + D_it - 1, dat)
   # summary(mod1)
@@ -85,7 +85,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   res_est = c(DID_est, OLS_est, FE_est, RE_est)
   res_bias = c(DID_bias, OLS_bias, FE_bias, RE_bias)
   CI_capture = c(OLS_CI, FE_CI, RE_CI)
-  # c(res_est, res_bias, CI_capture)
+  # c(res_est, res_bias)
   return(c(res_est, res_bias, CI_capture))
 }
 

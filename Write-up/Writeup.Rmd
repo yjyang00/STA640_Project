@@ -35,7 +35,7 @@ levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_tre
 
 \section{Introduction}
 
-Panel data analysis is a widely used statistical tool in econometrics to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the interpretation of the results. 
+Panel data analysis is a widely used statistical tool in social sciences, econometrics and ecology to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the interpretation of the results. 
 Fixed and random effects models frequently emerge in panel data analysis to account for confounding variables that are time-invariant [@gunasekara2014fixed] or time-varying [@li2011nonpara; @ahn2013panel]. 
 A common belief among econometricians is that fixed effects (FE) or random effects (RE) models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
 In this research paper, we aim to explore the relationship between fixed/random effects and time-invariant unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.

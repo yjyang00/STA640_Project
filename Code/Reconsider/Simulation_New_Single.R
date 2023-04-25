@@ -25,7 +25,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   A <- rnorm(n)
   X <- rnorm(n)
   
-  p = ifelse(A >= 1, 0.75, 0.45)
+  p = ifelse(A >= 1, 0.7, 0.3)
   D <- rbinom(n, 1, p)
   
   dat = tidyr::expand_grid(data.frame(id = 1:n, A = A, X = X, D = D), Time = 1:t) %>% 
@@ -75,8 +75,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   # tail(confint(mod2),1)
   RE_est = tail(summ_lmer$coefficients,1)[1]
   RE_bias = (RE_est - rho) %>% as.numeric()
-  
-  
+
   res_est = c(DID_est, OLS_est, FE_est, RE_est)
   res_bias = c(DID_bias, OLS_bias, FE_bias, RE_bias)
   # c(res_est, res_bias)
@@ -84,4 +83,4 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
 }
 
 colnames(result) = c("DID_est", "OLS_est", "FE_est", "RE_est", "DID_bias", "OLS_bias", "FE_bias", "RE_bias")
-colMeans(result)
+colMeans(result)[5:8]
