@@ -21,23 +21,30 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   delta <- 5
   gamma <- 3
   rho <- 8
+  phi = 3
   
   A <- rnorm(n)
-  X <- rnorm(n)
+  X <- runif(n, 0, 10)
+  
+  X_it = c()
+  for (j in 1:n){
+    X_it = c(X_it, rnorm(n = t, mean = X[j], sd = 1))
+  }
   
   p = ifelse(A >= 1, 0.75, 0.45)
   D <- rbinom(n, 1, p)
   
-  dat = tidyr::expand_grid(data.frame(id = 1:n, A = A, X = X, D = D), Time = 1:t) %>% 
-    mutate(id = factor(id)) %>% 
+  
+  dat = tidyr::expand_grid(data.frame(id = 1:n, A = A, D = D), Time = 1:t) %>% 
+    mutate(X_it = X_it) %>% 
+    mutate(time = factor(Time), id = factor(id)) %>% 
+    mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
+    mutate(D_it = D * Time_to_treat) %>% 
     mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
-    mutate(Y  = ifelse(Time < t_treat, 
-                       (Time)^2 + delta*X + gamma*A + epsilon,
-                       (Time)^2 + delta*X + gamma*A + rho*D + epsilon))
+    mutate(Y = (Time)^2 + gamma*A + rho*D_it + phi*A*D_it + epsilon)
   
-  # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
+  # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_line() + facet_wrap(~factor(D))
 
-  
   # DID estimator
   bar_Y_1_t2 = dat %>% filter(Time == t_treat, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
   bar_Y_1_t1 = dat %>% filter(Time == t_treat-1, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
@@ -48,28 +55,22 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   DID_est = (bar_Y_1_t2 - bar_Y_1_t1) - (bar_Y_0_t2 - bar_Y_0_t1)
   DID_bias = DID_est - rho
   
-  
-  # create D_it
-  dat = dat %>% mutate(time = factor(Time)) %>% 
-    mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
-    mutate(D_it = D * Time_to_treat)
-  
   # OLS
-  mod0 = lm(Y ~ X + time + D_it, dat)
+  mod0 = lm(Y ~ X_it + time + D_it, dat)
   # summary(mod0)
   # tail(confint(mod0),1)
   OLS_est = tail(mod0$coefficients, 1)
   OLS_bias = (OLS_est - rho) %>% as.numeric()
 
   # fixed-effects model
-  mod1 = lm(Y ~ id + X + time + D_it - 1, dat)
+  mod1 = lm(Y ~ id + X_it + time + D_it - 1, dat)
   # summary(mod1)
   # tail(confint(mod1),1)
   FE_est = tail(mod1$coefficients, 1)
   FE_bias = (FE_est - rho) %>% as.numeric()
   
   # random-effects model (with random intercept)
-  mod2 = lme4::lmer(Y ~ X + time + D_it + (1 | id) - 1, dat)
+  mod2 = lme4::lmer(Y ~ X_it + time + D_it + (1 | id) - 1, dat)
   summ_lmer = summary(mod2)
   # summ_lmer
   # tail(confint(mod2),1)
@@ -85,3 +86,5 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
 
 colnames(result) = c("DID_est", "OLS_est", "FE_est", "RE_est", "DID_bias", "OLS_bias", "FE_bias", "RE_bias")
 colMeans(result)
+
+

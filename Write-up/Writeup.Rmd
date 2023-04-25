@@ -72,6 +72,7 @@ We presume that specifying an intercept for every individual in the study is an 
 knitr::include_graphics("Image/DAG.png")
 ```
 
+Generate data 
 
 \subsection{Continuous Case}
 
@@ -86,7 +87,7 @@ $$
 
 In our DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individualis simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. 
 
-The coefficient for covariate, $\gamma$, is chosen arbitrarily as 5. 
+The coefficient for covariate, $\gamma$, is chosen arbitrarily as . 
 
 
 
@@ -102,7 +103,7 @@ $$
 
 
 
-**Regression model**
+**OLS model**
 
 $$
 \begin{aligned}

@@ -103,7 +103,6 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
 
 
 ```{r}
-
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(Bias_Type != "OLS_bias") %>%
   ggplot(aes(x = gamma, y = Bias, color = Bias_Type, alpha = rho)) + geom_point() + facet_wrap(~confound_treatment)
@@ -155,7 +154,58 @@ bias_result_full_by_n %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias",
 bias_result_full_by_n %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(Bias_Type %in% c("FE_bias","DID_bias")) %>%   ggplot(aes(x = n, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
 ```
+```{r}
+load("bias_result_no_interaction.RData")
+bias_result_no_interaction$confound_treatment = factor(bias_result_no_interaction$confound_treatment)
+levels(bias_result_no_interaction$confound_treatment)[levels(bias_result_no_interaction$confound_treatment)=="Uniform"] <- "Very Strong"
 
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(rho == 4) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(gamma == 4) %>% 
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", rho == 4) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_no_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", gamma == 4) %>%
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+```
+
+```{r}
+load("bias_result_interaction.RData")
+bias_result_interaction$confound_treatment = factor(bias_result_interaction$confound_treatment)
+levels(bias_result_interaction$confound_treatment)[levels(bias_result_interaction$confound_treatment)=="Uniform"] <- "Very Strong"
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(rho == 10, phi == 10) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(gamma == 10, phi == 10) %>% 
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(gamma == 10, rho == 10) %>% 
+  ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", rho == 10, phi == 10) %>% 
+  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", gamma == 10, phi == 10) %>%
+  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+  filter(Bias_Type != "OLS_bias", rho == 10, gamma == 10) %>% 
+  ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+```
 
 
 
