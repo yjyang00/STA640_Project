@@ -22,7 +22,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   delta <- 1
   gamma <- 3
   rho <- 1
-  phi = 0
+  phi = 1
   
   A <- runif(n, 0, 1)
   X <- runif(n, 0, 10)
@@ -42,7 +42,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
     mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
     mutate(D_it = D * Time_to_treat) %>% 
     mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
-    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*(A)^3*D_it + epsilon)
+    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*(1/A)*D_it + epsilon)
   
   # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_line() + facet_wrap(~factor(D))
 
@@ -97,9 +97,8 @@ colMeans(result)
 
 
 
-result_10_5_gamma3_phi0 = result
-save(result_10_5_gamma3_phi0, file = "result_data/result_10_5_gamma3_phi0.RData")
-
+result_5_3_gamma3_phi1inv = result
+save(result_5_3_gamma3_phi1inv, file = "result_data/result_5_3_gamma3_phi1inv.RData")
 
 
 # result %>% as_tibble() %>%

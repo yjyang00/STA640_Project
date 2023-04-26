@@ -137,11 +137,53 @@ result_10_5_gamma1_rho7 %>% as_tibble() %>%
 
 ## Interactions
 
-```{r, fig.width=10, fig.height=4, warning=FALSE}
+```{r}
 load("result_data/result_5_3_gamma3_phi0.RData")
 load("result_data/result_5_3_gamma3_phi1.RData")
 load("result_data/result_5_3_gamma3_phi3.RData")
 load("result_data/result_5_3_gamma3_phi5.RData")
+
+load("result_data/result_5_3_gamma3_phi0sq.RData")
+load("result_data/result_5_3_gamma3_phi1sq.RData")
+load("result_data/result_5_3_gamma3_phi3sq.RData")
+load("result_data/result_5_3_gamma3_phi5sq.RData")
+
+load("result_data/result_5_3_gamma3_phi0tri.RData")
+load("result_data/result_5_3_gamma3_phi1tri.RData")
+load("result_data/result_5_3_gamma3_phi3tri.RData")
+load("result_data/result_5_3_gamma3_phi5tri.RData")
+
+load("result_data/result_5_3_gamma3_phi0inv.RData")
+load("result_data/result_5_3_gamma3_phi1inv.RData")
+load("result_data/result_5_3_gamma3_phi2inv.RData")
+load("result_data/result_5_3_gamma3_phi2inv.RData")
+```
+
+
+```{r, fig.width=10, fig.height=4, warning=FALSE}
+
+
+gridExtra::grid.arrange(
+ result_5_3_gamma3_phi0inv %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,10) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 0, Interaction: 1/A D"),
+result_5_3_gamma3_phi1inv %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,10) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 1, Interaction: 1/A D"),
+result_5_3_gamma3_phi3inv %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,10) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 3, Interaction: 1/A D"),
+result_5_3_gamma3_phi5inv %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,10) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: 1/A D"), nrow = 1)
 
 gridExtra::grid.arrange(
  result_5_3_gamma3_phi0 %>% as_tibble() %>%
@@ -166,11 +208,6 @@ result_5_3_gamma3_phi5 %>% as_tibble() %>%
   ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: A D"), nrow = 1)
 
 
-load("result_data/result_5_3_gamma3_phi0sq.RData")
-load("result_data/result_5_3_gamma3_phi1sq.RData")
-load("result_data/result_5_3_gamma3_phi3sq.RData")
-load("result_data/result_5_3_gamma3_phi5sq.RData")
-
 gridExtra::grid.arrange(
  result_5_3_gamma3_phi0sq %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
@@ -193,33 +230,6 @@ result_5_3_gamma3_phi5sq %>% as_tibble() %>%
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
   ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: A^2 D"), nrow = 1)
 
-
-load("result_data/result_5_3_gamma3_phi0tri.RData")
-load("result_data/result_5_3_gamma3_phi1tri.RData")
-load("result_data/result_5_3_gamma3_phi3tri.RData")
-load("result_data/result_5_3_gamma3_phi5tri.RData")
-
-gridExtra::grid.arrange(
- result_5_3_gamma3_phi0tri %>% as_tibble() %>%
-  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 0, Interaction: A^3 D"),
-result_5_3_gamma3_phi1tri %>% as_tibble() %>%
-  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 1, Interaction: A^3 D"),
-result_5_3_gamma3_phi3tri %>% as_tibble() %>%
-  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 3, Interaction: A^3 D"),
-result_5_3_gamma3_phi5tri %>% as_tibble() %>%
-  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: A^3 D"), nrow = 1)
 ```
 
 
