@@ -77,18 +77,28 @@ Generate data
 \subsection{Continuous Case}
 
 Our data generation process (DGP) uses the following model specifications:
+<!-- E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\ -->
 $$
 \begin{aligned}
-E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\
-Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t}+ \epsilon_{it} \\
+Y_{it} &= \alpha+\lambda_t+ \delta \mathrm{X}_{i t}+\rho \mathrm{D}_{i t}+ \gamma A_i+\phi \mathrm{D}_{i t} A_i +\epsilon_{it} \\
 \end{aligned}
 $$
 
+In our DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. 
 
-In our DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individualis simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. 
+We designed two ways that the unmeasured confounding, A, could affect the treatment assignment: 1. As $A\sim N(0,1)$ is above or below a certain cut-off point, the probability of receiving the treatment changes to a respectively value. 2. $A\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. 
 
-The coefficient for covariate, $\gamma$, is chosen arbitrarily as . 
+The outcome variable, $Y_it$, is continuous and generated from a linear model including: 
 
+* The true coefficient for covariate, $\gamma$, is chosen arbitrarily as 5. 
+
+* The true treatment effect, i.e. the coefficient of treatment status, $\rho$, could var from to [ ] to [ ].
+
+* The true coefficient of unmeasured confounding, $\gamma$, could vary from to [ ] to [ ], with zero meaning that there is no direct effect of unmeasured confounding on the outcome. 
+
+* The true coefficient of the interaction between the treatment and the unmeasured confounding, $\gamma$, could var from to [ ] to [ ], with zero meaning that there is no interaction effect. 
+
+* The noise term, $\epsilon$, which follows $N(0,1)$. 
 
 
 **Difference-in-difference (DID) estimator**

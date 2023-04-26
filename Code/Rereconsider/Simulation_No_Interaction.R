@@ -99,19 +99,19 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
 
 
 
-n <- 100 
+n <- 50 
 t <- 10 
 t_treat <- 5
 delta <- 5
-gamma <- (1:10)*2
-rho <- (1:10)*2
+gamma <- 0:10
+rho <- 1:10
 phi = 0
 confound_treatment = c("Small","Strong","Uniform")
 
 
 # Define a function to be applied in parallel
 bias_mutate <- function(df) {
-  df %>%  mutate(result = panel_bias_sim(S = 50, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
+  df %>%  mutate(result = panel_bias_sim(S = 100, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
 }
 
 bias_result_no_interaction <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rho, phi, confound_treatment) %>% 
