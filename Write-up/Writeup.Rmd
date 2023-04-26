@@ -101,10 +101,14 @@ The outcome variable, $Y_it$, is continuous and generated from a linear model in
 * The noise term, $\epsilon$, which follows $N(0,1)$. 
 
 
+**Estimator**
+
+We have several types of methods below that provide estimations of the treatment effects. 
+
+
 **Difference-in-difference (DID) estimator**
 
 The Difference-in-Differences (DID) method is a quasi-experimental approach used to estimate the causal effect of a treatment in panel data.
-
 
 $$
 \tau^{DID} = (\bar Y_{1, t+1} - \bar Y_{1, t}) - (\bar Y_{0, t+1} - \bar Y_{0, t})
@@ -112,8 +116,9 @@ $$
 
 
 
-
 **OLS model**
+
+very likely to be heavily biased
 
 $$
 \begin{aligned}
@@ -122,9 +127,9 @@ Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsi
 $$
 
 
-
-
 **Fixed effects model**
+
+Probably good performance, but would be biased if there is interaction effect missing
 
 $$
 \begin{aligned}
@@ -132,7 +137,6 @@ $$
 Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsilon_{it} 
 \end{aligned}
 $$
-
 
 
 
