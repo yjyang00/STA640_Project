@@ -1,0 +1,226 @@
+---
+title: "Result_analysis"
+author: "Yicheng Shen"
+date: "2023-04-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+ggplot2::theme_set(ggplot2::theme_bw())
+knitr::opts_chunk$set(out.width = "100%", fig.align = 'center')
+```
+
+
+
+```{r, fig.width=10, fig.height=3.5}
+load("result_data/result_5_3_gamma1_phi0.RData")
+load("result_data/result_10_5_gamma1_phi0.RData")
+load("result_data/result_30_15_gamma1_phi0.RData")
+load("result_data/result_50_25_gamma1_phi0.RData")
+gridExtra::grid.arrange(
+  result_5_3_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 5, T_treat = 3"),
+result_10_5_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 10, T_treat = 5"), 
+result_30_15_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 30, T_treat = 15"), 
+result_50_25_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 50, T_treat = 25"),nrow = 1)
+```
+
+
+
+```{r, fig.width=10, fig.height=4}
+load("result_data/result_20_3_gamma1_phi0.RData")
+load("result_data/result_20_8_gamma1_phi0.RData")
+load("result_data/result_20_13_gamma1_phi0.RData")
+load("result_data/result_20_18_gamma1_phi0.RData")
+
+gridExtra::grid.arrange(
+  result_20_3_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.8,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 20, T_treat = 3"),
+result_20_8_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.8,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 20, T_treat = 8"), 
+result_20_13_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.8,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 20, T_treat = 13"), 
+result_20_18_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.8,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 20, T_treat = 18"),nrow = 1)
+```
+
+
+
+```{r, fig.width=10, fig.height=4, warning = F, eval = F}
+load("result_data/result_10_5_gamma3_phi0.RData")
+load("result_data/result_10_5_gamma5_phi0.RData")
+load("result_data/result_10_5_gamma10_phi0.RData")
+load("result_data/result_10_5_gamma15_phi0.RData")
+
+gridExtra::grid.arrange(
+  result_10_5_gamma3_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "gamma = 3"),
+result_10_5_gamma5_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "gamma = 5"),
+result_10_5_gamma10_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "gamma = 10"),
+result_10_5_gamma15_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "gamma = 15"),nrow = 1)
+```
+
+
+
+```{r, fig.width=10, fig.height=4, warning=FALSE}
+load("result_data/result_10_5_gamma1_rho1.RData")
+load("result_data/result_10_5_gamma1_rho3.RData")
+load("result_data/result_10_5_gamma1_rho5.RData")
+load("result_data/result_10_5_gamma1_rho7.RData")
+
+gridExtra::grid.arrange(
+  result_10_5_gamma1_rho1 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-.7,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "rho = 1"),
+result_10_5_gamma1_rho3 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-.7,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "rho = 3"),
+result_10_5_gamma1_rho5 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-.7,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "rho = 5"),
+result_10_5_gamma1_rho7 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-.7,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "rho = 7"), nrow = 1)
+```
+
+## Interactions
+
+```{r, fig.width=10, fig.height=4, warning=FALSE}
+load("result_data/result_5_3_gamma3_phi0.RData")
+load("result_data/result_5_3_gamma3_phi1.RData")
+load("result_data/result_5_3_gamma3_phi3.RData")
+load("result_data/result_5_3_gamma3_phi5.RData")
+
+gridExtra::grid.arrange(
+ result_5_3_gamma3_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 0, Interaction: A D"),
+result_5_3_gamma3_phi1 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 1, Interaction: A D"),
+result_5_3_gamma3_phi3 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 3, Interaction: A D"),
+result_5_3_gamma3_phi5 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: A D"), nrow = 1)
+
+
+load("result_data/result_5_3_gamma3_phi0sq.RData")
+load("result_data/result_5_3_gamma3_phi1sq.RData")
+load("result_data/result_5_3_gamma3_phi3sq.RData")
+load("result_data/result_5_3_gamma3_phi5sq.RData")
+
+gridExtra::grid.arrange(
+ result_5_3_gamma3_phi0sq %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 0, Interaction: A^2 D"),
+result_5_3_gamma3_phi1sq %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 1, Interaction: A^2 D"),
+result_5_3_gamma3_phi3sq %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 3, Interaction: A^2 D"),
+result_5_3_gamma3_phi5sq %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: A^2 D"), nrow = 1)
+
+
+load("result_data/result_5_3_gamma3_phi0tri.RData")
+load("result_data/result_5_3_gamma3_phi1tri.RData")
+load("result_data/result_5_3_gamma3_phi3tri.RData")
+load("result_data/result_5_3_gamma3_phi5tri.RData")
+
+gridExtra::grid.arrange(
+ result_5_3_gamma3_phi0tri %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 0, Interaction: A^3 D"),
+result_5_3_gamma3_phi1tri %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 1, Interaction: A^3 D"),
+result_5_3_gamma3_phi3tri %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 3, Interaction: A^3 D"),
+result_5_3_gamma3_phi5tri %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "phi = 5, Interaction: A^3 D"), nrow = 1)
+```
+
+
+

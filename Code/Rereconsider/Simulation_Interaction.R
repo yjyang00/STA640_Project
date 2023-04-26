@@ -49,7 +49,7 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
       mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
       mutate(D_it = D * Time_to_treat) %>% 
       mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
-      mutate(Y = (Time)^2 + delta*X_it + gamma*A + rho*D_it + phi*A*D_it + epsilon)
+      mutate(Y = (Time)^2 + delta*X_it + gamma*A + rho*D_it + phi*(A)^3*D_it + epsilon)
     
     # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_point() + geom_line() + facet_wrap(~factor(D))
     
@@ -81,7 +81,7 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
     mod2 = lme4::lmer(Y ~ X_it + time + D_it + (1 | id) - 1, dat)
     summ_lmer = summary(mod2)
     # summ_lmer
-    RE_est = tail(summ_lmer$coefficients,1)[1]
+    RE_est = tail(summ_lmer$coefficients, 1)[1]
     RE_bias = (RE_est - rho) %>% as.numeric()
     RE_ci =  tail(confint(mod2, method="Wald"),1)
     RE_CI = RE_ci[1] < rho & rho < RE_ci[2]
@@ -105,8 +105,8 @@ n <- 50
 t <- 10 
 t_treat <- 5
 delta <- 10
-gamma <- (0:5)*2
-rho <- (1:5)*2
+gamma <- 1
+rho <- 1
 phi = (0:5)*2
 confound_treatment = c("Small","Strong","Very Strong")
 
@@ -177,4 +177,8 @@ bias_result_interaction %>% pivot_longer(cols = c("FE_bias", "RE_bias"), names_t
 
 bias_result_interaction %>% pivot_longer(cols = c("OLS_CI", "FE_CI", "RE_CI"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(rho == 2, gamma == 2)%>% 
+  ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
+
+
+bias_result_interaction %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
