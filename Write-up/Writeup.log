@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.5)  27 APR 2023 13:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.5)  27 APR 2023 15:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -576,46 +576,63 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 24
 (/Users/yichengshen/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 259.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 261.
 (/Users/yichengshen/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [3]
 
-LaTeX Warning: Reference `fig:all_bias_without_ols' on page 4 undefined on input line 355.
+LaTeX Warning: Reference `fig:all_bias_without_ols' on page 4 undefined on input line 366.
 
 [4] [5]
-<Writeup_files/figure-latex/With OLS-1.pdf, id=91, 794.97pt x 433.62pt>
+<Writeup_files/figure-latex/With OLS-1.pdf, id=92, 794.97pt x 433.62pt>
 File: Writeup_files/figure-latex/With OLS-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/With OLS-1.pdf>
-Package pdftex.def Info: Writeup_files/figure-latex/With OLS-1.pdf  used on input line 390.
+Package pdftex.def Info: Writeup_files/figure-latex/With OLS-1.pdf  used on input line 401.
 (pdftex.def)             Requested size: 446.2719pt x 243.42102pt.
-<Writeup_files/figure-latex/n_of_time-1.pdf, id=92, 722.7pt x 252.945pt>
+<Writeup_files/figure-latex/n_of_time-1.pdf, id=93, 722.7pt x 252.945pt>
 File: Writeup_files/figure-latex/n_of_time-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/n_of_time-1.pdf>
-Package pdftex.def Info: Writeup_files/figure-latex/n_of_time-1.pdf  used on input line 399.
+Package pdftex.def Info: Writeup_files/figure-latex/n_of_time-1.pdf  used on input line 410.
 (pdftex.def)             Requested size: 413.38788pt x 144.68576pt.
-<Writeup_files/figure-latex/n_of_time_treat-1.pdf, id=93, 722.7pt x 252.945pt>
+<Writeup_files/figure-latex/n_of_time_treat-1.pdf, id=94, 722.7pt x 252.945pt>
 File: Writeup_files/figure-latex/n_of_time_treat-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/n_of_time_treat-1.pdf>
-Package pdftex.def Info: Writeup_files/figure-latex/n_of_time_treat-1.pdf  used on input line 408.
+Package pdftex.def Info: Writeup_files/figure-latex/n_of_time_treat-1.pdf  used on input line 419.
 (pdftex.def)             Requested size: 413.38788pt x 144.68576pt.
 [6 <./Writeup_files/figure-latex/With OLS-1.pdf> <./Writeup_files/figure-latex/n_of_time-1.pdf>]
-<Writeup_files/figure-latex/bias_gamma-1.pdf, id=109, 722.7pt x 252.945pt>
+<Writeup_files/figure-latex/bias_gamma-1.pdf, id=110, 722.7pt x 252.945pt>
 File: Writeup_files/figure-latex/bias_gamma-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_gamma-1.pdf>
-Package pdftex.def Info: Writeup_files/figure-latex/bias_gamma-1.pdf  used on input line 417.
+Package pdftex.def Info: Writeup_files/figure-latex/bias_gamma-1.pdf  used on input line 428.
 (pdftex.def)             Requested size: 413.38788pt x 144.68576pt.
-<Writeup_files/figure-latex/bias_rho-1.pdf, id=110, 722.7pt x 252.945pt>
+<Writeup_files/figure-latex/bias_correct-1.pdf, id=111, 722.7pt x 252.945pt>
+File: Writeup_files/figure-latex/bias_correct-1.pdf Graphic file (type pdf)
+<use Writeup_files/figure-latex/bias_correct-1.pdf>
+Package pdftex.def Info: Writeup_files/figure-latex/bias_correct-1.pdf  used on input line 437.
+(pdftex.def)             Requested size: 413.38788pt x 144.68576pt.
+<Writeup_files/figure-latex/bias_rho-1.pdf, id=112, 722.7pt x 252.945pt>
 File: Writeup_files/figure-latex/bias_rho-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_rho-1.pdf>
-Package pdftex.def Info: Writeup_files/figure-latex/bias_rho-1.pdf  used on input line 426.
+Package pdftex.def Info: Writeup_files/figure-latex/bias_rho-1.pdf  used on input line 446.
 (pdftex.def)             Requested size: 413.38788pt x 144.68576pt.
-<Writeup_files/figure-latex/bias_interactions-1.pdf, id=111, 722.7pt x 650.43pt>
+[7 <./Writeup_files/figure-latex/n_of_time_treat-1.pdf> <./Writeup_files/figure-latex/bias_gamma-1.pdf> <./Writeup_files/figure-latex/bias_correct-1.pdf>]
+<Writeup_files/figure-latex/bias_interactions-1.pdf, id=136, 722.7pt x 650.43pt>
 File: Writeup_files/figure-latex/bias_interactions-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_interactions-1.pdf>
-Package pdftex.def Info: Writeup_files/figure-latex/bias_interactions-1.pdf  used on input line 435.
+Package pdftex.def Info: Writeup_files/figure-latex/bias_interactions-1.pdf  used on input line 455.
 (pdftex.def)             Requested size: 460.354pt x 414.3186pt.
-[7 <./Writeup_files/figure-latex/n_of_time_treat-1.pdf> <./Writeup_files/figure-latex/bias_gamma-1.pdf> <./Writeup_files/figure-latex/bias_rho-1.pdf>] [8 <./Writeup_files/figure-latex/bias_interactions-1.pdf>] [9] (./Writeup.aux)
+<Writeup_files/figure-latex/bias_interactions_AT-1.pdf, id=137, 722.7pt x 505.89pt>
+File: Writeup_files/figure-latex/bias_interactions_AT-1.pdf Graphic file (type pdf)
+<use Writeup_files/figure-latex/bias_interactions_AT-1.pdf>
+Package pdftex.def Info: Writeup_files/figure-latex/bias_interactions_AT-1.pdf  used on input line 464.
+(pdftex.def)             Requested size: 413.38788pt x 289.3715pt.
+[8 <./Writeup_files/figure-latex/bias_rho-1.pdf> <./Writeup_files/figure-latex/bias_interactions-1.pdf>]
+<Writeup_files/figure-latex/bias_inter_BC-1.pdf, id=154, 722.7pt x 252.945pt>
+File: Writeup_files/figure-latex/bias_inter_BC-1.pdf Graphic file (type pdf)
+<use Writeup_files/figure-latex/bias_inter_BC-1.pdf>
+Package pdftex.def Info: Writeup_files/figure-latex/bias_inter_BC-1.pdf  used on input line 473.
+(pdftex.def)             Requested size: 413.38788pt x 144.68576pt.
+[9 <./Writeup_files/figure-latex/bias_interactions_AT-1.pdf> <./Writeup_files/figure-latex/bias_inter_BC-1.pdf>] [10] (./Writeup.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -623,18 +640,18 @@ Package rerunfilecheck Info: File `Writeup.out' has not changed.
 (rerunfilecheck)             Checksum: 6895CEA6A9249633E6FFE70A1C4D0F12;856.
  ) 
 Here is how much of TeX's memory you used:
- 12586 strings out of 477035
- 202876 string characters out of 5827465
- 542900 words of memory out of 5000000
- 33431 multiletter control sequences out of 15000+600000
+ 12623 strings out of 477035
+ 204431 string characters out of 5827465
+ 543438 words of memory out of 5000000
+ 33461 multiletter control sequences out of 15000+600000
  529841 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  72i,9n,77p,312b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Writeup.pdf (9 pages, 368236 bytes).
+{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/yichengshen/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on Writeup.pdf (10 pages, 408426 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 108 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 271 PDF objects out of 1000 (max. 8388607)
+ 206 compressed objects within 3 object streams
+ 41 named destinations out of 1000 (max. 500000)
+ 123 words of extra memory for PDF output out of 10000 (max. 10000000)
 
