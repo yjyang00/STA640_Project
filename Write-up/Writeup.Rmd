@@ -92,7 +92,7 @@ Second, $A\sim \text{Uniform}(0,1)$ directly serves as the probability of receiv
 
 In addition, we also considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of the interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. 
 
-The outcome variable, $Y_{it}$, is thus continuous and generated from a linear model including: 
+The outcome variable, $Y_{it}$, is thus continuous and generated from the true model including: 
 
 * The true coefficient for covariate, $\delta$, is chosen arbitrarily as 1 or 5. 
 
@@ -160,10 +160,9 @@ RE: `glmer` from the `lme4`
 
 \section{Result}
 
-In Figure \ref{fig:bias_with_ols}, we show that 
+In Figure \ref{fig:all_bias_with_ols}, we show that 
 
-
-Figure \ref{fig:bias_without_ols}
+Figure \ref{fig:all_bias_without_ols}
 
 Figure \ref{fig:bias_with_t}
 
@@ -196,7 +195,7 @@ Overall, our project and many literature suggest that while fixed/random effects
 
 \section{Appendix}
 
-```{r With OLS, fig.cap="\\label{fig:bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%"}
+```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%", eval = F}
 gridExtra::grid.arrange(
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(rho == 5) %>%
@@ -208,7 +207,7 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
 )
 ```
 
-```{r Without OLS, fig.cap="\\label{fig:bias_without_ols} Compareing average bias of estimated treatment effects from DID, FE, and RE models under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%"}
+```{r Without OLS, fig.cap="\\label{fig:all_bias_without_ols} Compareing average bias of estimated treatment effects from DID, FE, and RE models under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%", eval = F}
 gridExtra::grid.arrange(
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(Bias_Type != "OLS_bias", rho == 5) %>% 
@@ -221,7 +220,7 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
 ```
 
 
-```{r n_of_time, fig.cap="\\label{fig:bias_with_t} Distribution of bias across varying total time points. Starting from here and the following figures, N = 50 and all coeffiients are 1 unless specified otherwise.", fig.width=10, fig.height=3.5}
+```{r n_of_time, fig.cap="\\label{fig:bias_with_t} Distribution of bias across varying total time points. Starting from here and the following figures, N = 50 and all coeffiients are 1 unless specified otherwise.", fig.width=10, fig.height=3.5,out.width="88%"}
 load("result_data/result_5_3_gamma1_phi0.RData")
 load("result_data/result_10_5_gamma1_phi0.RData")
 load("result_data/result_30_15_gamma1_phi0.RData")
@@ -251,7 +250,7 @@ result_50_25_gamma1_phi0 %>% as_tibble() %>%
 
 
 
-```{r n_of_time_treat, fig.cap="\\label{fig:bias_with_t_treat} Distribution of bias across varying treatment time points.", fig.width=10, fig.height=3.5}
+```{r n_of_time_treat, fig.cap="\\label{fig:bias_with_t_treat} Distribution of bias across varying treatment time points.", fig.width=10, fig.height=3.5, out.width="88%"}
 load("result_data/result_20_3_gamma1_phi0.RData")
 load("result_data/result_20_8_gamma1_phi0.RData")
 load("result_data/result_20_13_gamma1_phi0.RData")
@@ -286,37 +285,44 @@ result_20_18_gamma1_phi0 %>% as_tibble() %>%
 
 
 
-```{r bias_gamma, fig.cap="\\label{fig:bias_with_gamma} Distribution of bias across unmeasured confounding coefficients", fig.width=10, fig.height=3.5}
+```{r bias_gamma, fig.cap="\\label{fig:bias_with_gamma} Distribution of bias across unmeasured confounding coefficients.", fig.width=10, fig.height=3.5, out.width="88%"}
+load("result_data/result_10_5_gamma1_phi0.RData")
+load("result_data/result_10_5_gamma2_phi0.RData")
 load("result_data/result_10_5_gamma3_phi0.RData")
 load("result_data/result_10_5_gamma5_phi0.RData")
 load("result_data/result_10_5_gamma10_phi0.RData")
 load("result_data/result_10_5_gamma15_phi0.RData")
 
+load("result_data/result_10_5_gamma0_phi0.RData")
+load("result_data/result_10_5_gamma01_phi0.RData")
+load("result_data/result_10_5_gamma03_phi0.RData")
+load("result_data/result_10_5_gamma05_phi0.RData")
+
 gridExtra::grid.arrange(
-  result_10_5_gamma3_phi0 %>% as_tibble() %>%
+  result_10_5_gamma01_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 3")),
-result_10_5_gamma5_phi0 %>% as_tibble() %>%
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 0.1")),
+result_10_5_gamma05_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 5")),
-result_10_5_gamma10_phi0 %>% as_tibble() %>%
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 0.5")),
+result_10_5_gamma1_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 10")),
-result_10_5_gamma15_phi0 %>% as_tibble() %>%
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 1")),
+result_10_5_gamma2_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,4) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 15")),nrow = 1)
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~"= 2")),nrow = 1)
 
 
 # gridExtra::grid.arrange(
@@ -378,7 +384,7 @@ result_10_5_gamma1_rho7 %>% as_tibble() %>%
 ```
 
 
-```{r bias_interaction, fig.cap="\\label{fig:bias_interaction} Distribution of bias across coefficients of interactions", fig.width=10, fig.height=9, out.width="98%"}
+```{r bias_interactions, fig.cap="\\label{fig:bias_interaction} Distribution of bias across coefficients of interactions", fig.width=10, fig.height=9, out.width="98%"}
 load("result_data/result_5_3_gamma3_phi0.RData")
 load("result_data/result_5_3_gamma3_phi1.RData")
 load("result_data/result_5_3_gamma3_phi3.RData")
