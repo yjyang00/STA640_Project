@@ -35,7 +35,7 @@ levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_tre
 
 \section{Introduction}
 
-Panel data analysis is a widely used statistical tool in social sciences, econometrics and ecology to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the interpretation of the results. 
+Panel data analysis is a widely used statistical tool in social sciences, econometrics and ecology to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the causal interpretation of the results. 
 Fixed and random effects models frequently emerge in panel data analysis to account for confounding variables that are time-invariant [@gunasekara2014fixed] or time-varying [@li2011nonpara; @ahn2013panel]. 
 A common belief among econometricians is that fixed effects (FE) or random effects (RE) models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
 In this research paper, we aim to explore the relationship between fixed/random effects and time-invariant unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.
@@ -66,13 +66,13 @@ As such, our projects seeks to explore the trends of potential bias when applyin
 
 \section{Method}
 
-In this project, we investigate our research inquiry through a simulation study, with the aim of demonstrating the degree to which the fixed/random effects models estimate causal effects that align with the truth. Moreover, we also seek to identify any contributing factors that could potentially impact the magnitude of bias in these estimations.
+In this project, we investigate our research question through a simulation study, with the aim of demonstrating the degree to which the fixed/random effects models estimate causal effects that align with the truth. Moreover, we also seek to identify any contributing factors that could potentially impact the magnitude of bias in these estimations.
 
 ```{r DAG, fig.cap="\\label{fig:causal_DAG} Visualize the problem of unmeasured confoudning using a causal DAG",out.width="50%"}
 knitr::include_graphics("Image/DAG.png")
 ```
 
-While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment.
+While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment or time.
 
 
 \subsection{Continuous Case}
@@ -85,7 +85,7 @@ Y_{it} &= \alpha+\lambda_t+ \delta \mathrm{X}_{i t}+\rho \mathrm{D}_{i t}+ \gamm
 \end{aligned}
 $$
 
-In our most basic DGP of artificial panel data, there are $N = 100$ individuals and $T = 10$ time points. At half time ($\frac{T}{2}$), a binary treatment is given to those in the treatment group. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A_i$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. Notice that $A_i$ is a latent, unit-specific and time-invariant trait that is unobservable during modeling fitting.  
+In our most basic DGP setup of artificial panel data, there are $N = 100$ individuals and $T = 10$ time points. At half time ($\frac{T}{2}$), a binary treatment is given to those in the treatment group. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A_i$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. Notice that $A_i$ is a latent, unit-specific trait that is unobservable during modeling fitting.  
 
 We designed two ways that the unmeasured confounding, $A_i$, could affect the treatment assignment,$D_{it}$: First, as $A_i\sim N(0,1)$ is above or below a certain cut-off point, the probability of receiving the treatment changes to respective values. This is controllable since we can adjust the respective values to be widely apart (`strong` influence of A on D) or to be close (`small` influence of A on D).
 Second, $A_i\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as `very strong` influence of A on D.  
@@ -151,8 +151,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
-As shown by @hazlett2022understanding, there is an equivalence between RI and regularized FE models. Furthermore, it is shown that  a bias-corrected RE model with group-level means of $D_{it}$ could account for unit-specific unmeasured confounding in the same
-way that FE would: 
+As shown by @hazlett2022understanding, there is an equivalence between RI and regularized FE models. Furthermore, it is shown that  a bias-corrected RE model with group-level means of $D_{it}$ could account for unit-specific unmeasured confounding in the same way that FE would: 
 
 $$
 \begin{aligned}
@@ -172,6 +171,8 @@ RE: `glmer` from the `lme4`
 
 \section{Result}
 
+
+
 In Figure \ref{fig:all_bias_with_ols}, we show that 
 
 Figure \ref{fig:bias_with_t}
@@ -182,7 +183,9 @@ Figure \ref{fig:bias_with_gamma}
 
 Figure \ref{fig:bias_with_rho}
 
-In Figure \ref{fig:bias_interaction}, we illustrate that having an interaction term between unmeasured confounding and treatment assignment 
+In Figure \ref{fig:bias_interaction}, we show that even fixed effects models are not able to unbiasedly estimate the treatment effects when there are interaction terms between the unmeasured confounding and treatment assignment or time. Specifically, Figure \ref{fig:bias_AD_interaction} and \ref{fig:bias_AT_interaction} ... 
+
+Bias-corrected random effects models: Figure \ref{fig:bias_BiasCorrect_RE} and Figure \ref{fig:bias_BiasCorrect_RE_interaction}
 
 
 \section{Discussion}
@@ -203,9 +206,11 @@ Overall, our project and many literature suggest that while fixed/random effects
 \newpage
 
 
-\section{Appendix}
+\section{Graphical Appendix}
 
-```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="95%", eval = T}
+For more technical details including all of our R codes, simulated data and results, feel free to visit our Github repo: https://github.com/sheny2/STA-640. 
+
+```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by the degree to which A affects D.",fig.height=6, fig.width=11, out.width="95%", eval = T}
 load("result_data/bias_result_interaction_gamma.RData")
 # gridExtra::grid.arrange(
 # bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
@@ -412,17 +417,17 @@ bias_result_interaction_phi %>%
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
-  ggplot(aes(x = phi, y = Bias, color = Model)) + geom_point() + geom_line() + labs(title = "Interaction between unmeasured confounding and treatment", x = expression(phi)) + facet_wrap(~confound_treatment), 
+  ggplot(aes(x = phi, y = Bias, color = Model)) + geom_point() + geom_line() + labs(title = "Bias with interaction between unmeasured confounding and treatment", x = expression(phi)) + facet_wrap(~confound_treatment), 
 bias_result_interaction_beta %>%   
   filter(beta <= 10) %>% 
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
-  ggplot(aes(x = beta, y = Bias, color = Model)) + geom_point() + geom_line() + labs(title = "Interaction between unmeasured confounding and time", x = expression(beta)) + facet_wrap(~confound_treatment))
+  ggplot(aes(x = beta, y = Bias, color = Model)) + geom_point() + geom_line() + labs(title = "Bias with interaction between unmeasured confounding and time", x = expression(beta)) + facet_wrap(~confound_treatment))
 ```
 
-```{r bias_interactions, fig.cap="\\label{fig:bias_interaction} Distribution of bias across coefficients of interactions.", fig.width=10, fig.height=9, out.width="85%"}
+```{r bias_interactions, fig.cap="\\label{fig:bias_AD_interaction} Distribution of bias across coefficients of interactions.", fig.width=10, fig.height=9, out.width="85%"}
 load("result_data/result_5_3_gamma3_phi0.RData")
 load("result_data/result_5_3_gamma3_phi1.RData")
 load("result_data/result_5_3_gamma3_phi3.RData")
@@ -516,7 +521,7 @@ result_5_3_gamma3_phi5sq %>% as_tibble() %>%
 ```
 
 
-```{r bias_interactions_AT, fig.cap="\\label{fig:bias_AT_inter} Distribution of bias across coefficients of interaction between unmeasured confounding and time.", fig.width=10, fig.height=7, out.width="85%"}
+```{r bias_interactions_AT, fig.cap="\\label{fig:bias_AT_interaction} Distribution of bias across coefficients of interaction between unmeasured confounding and time.", fig.width=10, fig.height=7, out.width="85%"}
 load("result_data/result_5_3_gamma1_beta1.RData")
 load("result_data/result_5_3_gamma1_beta3.RData")
 load("result_data/result_5_3_gamma1_beta5.RData")
