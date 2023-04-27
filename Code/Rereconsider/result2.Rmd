@@ -161,8 +161,6 @@ load("result_data/result_5_3_gamma3_phi2inv.RData")
 
 
 ```{r, fig.width=10, fig.height=4, warning=FALSE}
-
-
 gridExtra::grid.arrange(
  result_5_3_gamma3_phi0inv %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
@@ -233,4 +231,28 @@ result_5_3_gamma3_phi5sq %>% as_tibble() %>%
 ```
 
 
+
+```{r, fig.width=10, fig.height=4, warning=FALSE, eval = F, echo = F}
+gridExtra::grid.arrange(
+ result_10_105_1110 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,2) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "N = 10"),
+result_20_105_1110 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,2) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "N = 20"),
+result_30_105_1110 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,2) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "N = 30, Interaction: A D"),
+result_50_105_1110 %>% as_tibble() %>%
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,2) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "N = 50, Interaction: A D"), nrow = 1)
+```
 

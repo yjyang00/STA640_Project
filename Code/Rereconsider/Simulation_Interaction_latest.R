@@ -20,7 +20,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   t_treat <- 5
   
   delta <- 1
-  gamma <- 3
+  gamma <- 1
   rho <- 1
   phi = 1
   
@@ -98,6 +98,8 @@ colMeans(result)
 
 
 result_5_3_gamma3_phi1inv = result
+
+
 save(result_5_3_gamma3_phi1inv, file = "result_data/result_5_3_gamma3_phi1inv.RData")
 
 
