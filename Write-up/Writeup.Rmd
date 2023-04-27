@@ -40,8 +40,8 @@ Fixed and random effects models frequently emerge in panel data analysis to acco
 A common belief among econometricians is that fixed effects (FE) or random effects (RE) models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
 In this research paper, we aim to explore the relationship between fixed/random effects and time-invariant unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.
 
-Our simulation suggests that fixed/random effects can remedy the issue of unmeasured confounding to a certain extent, but there are still systematic bias resulting from the relationship between unmeasured confounding and the treatment assignment. **[more stuff here]**
 
+Based on the results of our simulations, we found that the implementation of fixed/random effects models can, to a certain extent, address the presence of unmeasured confoundings. However, there remains some systematic bias due to the correlations and interactions between the unmeasured confounding and the treatment assignment. Specifically, factors such as the size, time span and treatment time points of the panel data, the magnitude of the unmeasured confounding, and the extent to which it impacts both the treatment and the outcome all play important roles in influencing the degree of bias present in the causal estimations from fixed/random effects models.
 
 
 
@@ -66,17 +66,17 @@ As such, our projects seeks to explore the trends of potential bias when applyin
 
 \section{Method}
 
-We explore the our research question with a simulation study.  
+In this project, we investigate our research inquiry through a simulation study, with the aim of demonstrating the degree to which the fixed/random effects models estimate causal effects that align with the truth. Moreover, we also seek to identify any contributing factors that could potentially impact the magnitude of bias in these estimations.
 
 ```{r DAG, fig.cap="\\label{fig:causal_DAG} Visualize the problem of unmeasured confoudning using a causal DAG",out.width="50%"}
 knitr::include_graphics("Image/DAG.png")
 ```
 
-We presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address unmeasured confounding, $A$. 
+While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment.
 
 \subsection{Continuous Case}
 
-Our data generation process (DGP) uses the following model specifications:
+We first Our data generation process (DGP) uses the following model specifications:
 <!-- E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\ -->
 $$
 \begin{aligned}
@@ -84,18 +84,16 @@ Y_{it} &= \alpha+\lambda_t+ \delta \mathrm{X}_{i t}+\rho \mathrm{D}_{i t}+ \gamm
 \end{aligned}
 $$
 
-In our DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. At half time ($t=5$), treatment is given to those in the treatment group. 
-
+In our most basic DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. At half time ($t=5$), treatment is given to those in the treatment group. 
 
 We designed two ways that the unmeasured confounding, A, could affect the treatment assignment: First, as $A\sim N(0,1)$ is above or below a certain cut-off point, the probability of receiving the treatment changes to respective values. This is controllable since we can adjust the respective values to be widely apart (`strong` influence of A on D) or to be close (`small` influence of A on D).
 Second, $A\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as `very strong` influnce of A on D.  
 
+In addition, we also considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of the interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. 
 
-In addition, we also considered the potential interaction effect from unmeasured confounding and treatment on the outcome. There are three 
+\ 
 
-
-
-The outcome variable, $Y_it$, is thus continuous and generated from a linear model including: 
+The outcome variable, $Y_{it}$, is thus continuous and generated from a linear model including: 
 
 * The true coefficient for covariate, $\delta$, is chosen arbitrarily as 1 or 5. 
 
@@ -108,12 +106,13 @@ The outcome variable, $Y_it$, is thus continuous and generated from a linear mod
 * The noise term, $\epsilon_{it}$, is set to follow $N(0,1)$. 
 
 
-**Estimator**
+**Estimators**
 
-We have several types of methods below that provide estimations of the treatment effects. 
+There are several distinct methods that allow for estimations of treatment effects. Our primary objective is to assess the performance of these models under a range of diverse circumstances.
 
+\ 
 
-**Difference-in-difference (DID) estimator**
+***Difference-in-difference (DID) estimator***
 
 The Difference-in-Differences (DID) method is a quasi-experimental approach used to estimate the causal effect of a treatment in panel data. Its formulation could be viewed using the difference between the "Before-after (BA)" estimators of treatment and of control groups, which makes it easier and faster to calculate than regression-based models. Nevertheless, adding time-varying covariates and interaction terms are easier to do in parametric models rather than DID.  
 
@@ -125,9 +124,9 @@ $$
 $$
 
 
-**OLS model**
+***OLS model***
 
-very likely to be heavily biased since it does not remedy unmeasured confounding or potential interactions. 
+The basic form of OLS model is very likely to be vulnerable to severe bias since it does not remedy unmeasured confounding or potential interactions. 
 
 $$
 \begin{aligned}
@@ -136,9 +135,9 @@ Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsi
 $$
 
 
-**Fixed effects model**
+***Fixed effects (FE) model***
 
-Probably good performance, but would be biased if there is interaction effect missing
+The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured confoundings remains questionable.   
 
 $$
 \begin{aligned}
@@ -148,9 +147,9 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 $$
 
 
-**Random effects model**
+***Random effects (RE/RI) model***
 
-Our random effects model is essentially a random intercept (RI) model. The argument that RI could account for unmeasured confounding is theoretically problematic due to its modeling specification. 
+The random effects model is essentially a random intercept (RI) model. The argument that RI could account for unmeasured confounding is theoretically problematic due to its modeling specification. 
 In particular, bias emerges when the random effects are correlated with the treatment. Because the group-specific intercepts in a RI model are regularized, they do not achieve the values that would “fully absorb” group-specific confounding, leaving components unexplained that can instead be captured by FE [@hazlett2022understanding]. 
 
 $$
@@ -160,7 +159,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
-We use `lmer` from the `lme4` package to fit the random intercept model using REML. 
+We use `lmer` from the `lme4` package to fit the random intercept model using REML. This frequentiest way of fitting random intercept models is often used, though it may have as robust uncertainty quantifications as the Bayesian hierarhical models.  
 
 \subsection{Binary Case}
 
