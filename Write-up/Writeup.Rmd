@@ -85,14 +85,12 @@ Y_{it} &= \alpha+\lambda_t+ \delta \mathrm{X}_{i t}+\rho \mathrm{D}_{i t}+ \gamm
 \end{aligned}
 $$
 
-In our most basic DGP of artificial panel data, there are 100 individuals and 10 time points. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. At half time ($t=5$), treatment is given to those in the treatment group. 
+In our most basic DGP of artificial panel data, there are $N = 100$ individuals and $T = 10$ time points. Usually at half time ($\frac{T}{2}$), treatment is given to those in the treatment group. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. Notice that $A$ is a latent and time-invariant trait that is unobservable during modeling fitting.  
 
 We designed two ways that the unmeasured confounding, A, could affect the treatment assignment: First, as $A\sim N(0,1)$ is above or below a certain cut-off point, the probability of receiving the treatment changes to respective values. This is controllable since we can adjust the respective values to be widely apart (`strong` influence of A on D) or to be close (`small` influence of A on D).
-Second, $A\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as `very strong` influnce of A on D.  
+Second, $A\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as `very strong` influence of A on D.  
 
 In addition, we also considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of the interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. 
-
-\ 
 
 The outcome variable, $Y_{it}$, is thus continuous and generated from a linear model including: 
 
@@ -102,9 +100,9 @@ The outcome variable, $Y_{it}$, is thus continuous and generated from a linear m
 
 * The true coefficient of unmeasured confounding, $\gamma$, could vary from to 0 to 20, with zero meaning that there is no direct effect of unmeasured confounding on the outcome. 
 
-* The true coefficient of the interaction between the treatment and the unmeasured confounding, $\gamma$, could var from to 0 to 10, with zero meaning that there is no interaction effect. 
+* The true coefficient of the interaction, $\phi$, between the treatment and the unmeasured confounding could vary from to 0 to 10, with zero meaning that there is no interaction effect. 
 
-* The noise term, $\epsilon_{it}$, is set to follow $N(0,1)$. 
+* The noise term, $\epsilon_{it}$, is set to follow $\epsilon_{it} \overset{i.i.d}\sim N(0,1)$. 
 
 
 **Estimators**
@@ -151,7 +149,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
-We use `lmer` from the `lme4` package to fit the random intercept model using REML. This frequentiest way of fitting random intercept models is often used, though it may have as robust uncertainty quantifications as the Bayesian hierarhical models.  
+We use `lmer` from the `lme4` package to fit the random intercept model using REML. The frequentiest way of fitting random intercept models is often used and faster to compute, though it may not have as robust uncertainty quantification as the Bayesian hierarchical models.  
 
 \subsection{Binary Case}
 
