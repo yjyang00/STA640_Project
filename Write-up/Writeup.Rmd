@@ -74,9 +74,10 @@ knitr::include_graphics("Image/DAG.png")
 
 While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment.
 
+
 \subsection{Continuous Case}
 
-In the case of continous outcomes, our data generation process (DGP) uses the following model specifications:
+In the case of continous outcomes, our data generation process (DGP) uses the following specifications:
 <!-- E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\ -->
 $$
 \begin{aligned}
@@ -112,21 +113,16 @@ There are several distinct methods that allow for estimations of treatment effec
 
 \ 
 
-***Difference-in-difference (DID) estimator***
-
-The Difference-in-Differences (DID) method is a quasi-experimental approach used to estimate the causal effect of a treatment in panel data. Its formulation could be viewed using the difference between the "Before-after (BA)" estimators of treatment and of control groups, which makes it easier and faster to calculate than regression-based models. Nevertheless, adding time-varying covariates and interaction terms are easier to do in parametric models rather than DID.  
+***Difference-in-difference (DID) estimator***: The Difference-in-Differences (DID) method is a quasi-experimental approach used to estimate the causal effect of a treatment in panel data. Its formulation could be viewed using the difference between the "Before-after (BA)" estimators of treatment and of control groups, which makes it easier and faster to calculate than regression-based models. Nevertheless, adding time-varying covariates and interaction terms are easier to do in parametric models rather than DID.  
 
 $$
 \begin{aligned}
-\tau^{DID} &= (\bar Y_{1, t+1} - \bar Y_{1, t}) - (\bar Y_{0, t+1} - \bar Y_{0, t}) \\
-&=\hat\tau^{BA}_1-\hat\tau^{BA}_0
+\tau^{DID} &= (\bar Y_{1, t+1} - \bar Y_{1, t}) - (\bar Y_{0, t+1} - \bar Y_{0, t}) =\hat\tau^{BA}_1-\hat\tau^{BA}_0
 \end{aligned}
 $$
 
 
-***OLS model***
-
-The basic form of OLS model is very likely to be vulnerable to severe bias since it does not remedy unmeasured confounding or potential interactions. 
+***OLS model***: The basic form of OLS model is very likely to be vulnerable to severe bias since it does not remedy unmeasured confounding or potential interactions. 
 
 $$
 \begin{aligned}
@@ -135,9 +131,7 @@ Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsi
 $$
 
 
-***Fixed effects (FE) model***
-
-The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured confoundings remains questionable.   
+***Fixed effects (FE) model***: The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured confoundings remains questionable.   
 
 $$
 \begin{aligned}
@@ -147,9 +141,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 $$
 
 
-***Random effects (RE/RI) model***
-
-The random effects model is essentially a random intercept (RI) model. The argument that RI could account for unmeasured confounding is theoretically problematic due to its modeling specification. 
+***Random effects (RE/RI) model***: The random effects model is essentially a random intercept (RI) model. The argument that RI could account for unmeasured confounding is theoretically problematic due to its modeling specification. 
 In particular, bias emerges when the random effects are correlated with the treatment. Because the group-specific intercepts in a RI model are regularized, they do not achieve the values that would “fully absorb” group-specific confounding, leaving components unexplained that can instead be captured by FE [@hazlett2022understanding]. 
 
 $$
@@ -183,7 +175,7 @@ Figure \ref{fig:bias_with_gamma}
 
 Figure \ref{fig:bias_with_rho}
 
-Figure \ref{fig:bias_interaction}
+In Figure \ref{fig:bias_interaction}, we illustrate that having an interaction term between unmeasured confounding and treatment assignment 
 
 
 \section{Discussion}
@@ -198,7 +190,7 @@ More time points?
 Estimated coefficients of latent variable?
 
 
-Overall, the literature suggests that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be more necessary in certain cases to fully address this issue.
+Overall, our project and many literature suggest that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be more necessary in certain cases to fully address this issue.
 
 
 \newpage
@@ -206,7 +198,7 @@ Overall, the literature suggests that while fixed/random effects models may be u
 
 \section{Appendix}
 
-```{r With OLS, fig.cap="\\label{fig:bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods.",fig.height=6, fig.width=11, out.width="75%"}
+```{r With OLS, fig.cap="\\label{fig:bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%"}
 gridExtra::grid.arrange(
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(rho == 5) %>%
@@ -218,7 +210,7 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
 )
 ```
 
-```{r Without OLS, fig.cap="\\label{fig:bias_without_ols} Compareing average bias of estimated treatment effects from DID, FE, and RE models.",fig.height=6, fig.width=11, out.width="75%"}
+```{r Without OLS, fig.cap="\\label{fig:bias_without_ols} Compareing average bias of estimated treatment effects from DID, FE, and RE models under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%"}
 gridExtra::grid.arrange(
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
   filter(Bias_Type != "OLS_bias", rho == 5) %>% 
@@ -231,7 +223,7 @@ bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_
 ```
 
 
-```{r n_of_time, fig.cap="\\label{fig:bias_with_t} Distribution of bias across varying total time points.", fig.width=10, fig.height=3.5}
+```{r n_of_time, fig.cap="\\label{fig:bias_with_t} Distribution of bias across varying total time points. Starting from here and the following figures, N = 50 and all coeffiients are 1 unless specified otherwise.", fig.width=10, fig.height=3.5}
 load("result_data/result_5_3_gamma1_phi0.RData")
 load("result_data/result_10_5_gamma1_phi0.RData")
 load("result_data/result_30_15_gamma1_phi0.RData")
@@ -241,22 +233,22 @@ gridExtra::grid.arrange(
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias"))) %>% 
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 5, T-treat = 3"),
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.5,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 5, T-treat = 3"),
 result_10_5_gamma1_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 10, T-treat = 5"), 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.5,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 10, T-treat = 5"), 
 result_30_15_gamma1_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 30, T-treat = 15"), 
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.5,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 30, T-treat = 15"), 
 result_50_25_gamma1_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-1,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 50, T-treat = 25"),nrow = 1)
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.5,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = "T = 50, T-treat = 25"),nrow = 1)
 ```
 
 
