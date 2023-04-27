@@ -16,11 +16,11 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   library(tidyverse)
   library(lme4)
   n <- 50 
-  t <- 10
-  t_treat <- 5
+  t <- 5
+  t_treat <- 3
   
   delta <- 1
-  gamma <- 1
+  gamma <- 3
   rho <- 1
   phi = 1
   
@@ -100,7 +100,7 @@ colMeans(result)
 result_5_3_gamma3_phi1inv = result
 
 
-save(result_5_3_gamma3_phi1inv, file = "result_data/result_5_3_gamma3_phi1inv.RData")
+# save(result_5_3_gamma3_phi1inv, file = "result_data/result_5_3_gamma3_phi1inv.RData")
 
 
 # result %>% as_tibble() %>%

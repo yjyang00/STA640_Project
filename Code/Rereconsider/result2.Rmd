@@ -155,8 +155,8 @@ load("result_data/result_5_3_gamma3_phi5tri.RData")
 
 load("result_data/result_5_3_gamma3_phi0inv.RData")
 load("result_data/result_5_3_gamma3_phi1inv.RData")
-load("result_data/result_5_3_gamma3_phi2inv.RData")
-load("result_data/result_5_3_gamma3_phi2inv.RData")
+load("result_data/result_5_3_gamma3_phi3inv.RData")
+load("result_data/result_5_3_gamma3_phi5inv.RData")
 ```
 
 
