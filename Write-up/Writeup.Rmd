@@ -90,7 +90,7 @@ In our most basic DGP of artificial panel data, there are $N = 100$ individuals 
 We designed two ways that the unmeasured confounding, $A_i$, could affect the treatment assignment,$D_{it}$: First, as $A_i\sim N(0,1)$ is above or below a certain cut-off point, the probability of receiving the treatment changes to respective values. This is controllable since we can adjust the respective values to be widely apart (`strong` influence of A on D) or to be close (`small` influence of A on D).
 Second, $A_i\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as `very strong` influence of A on D.  
 
-In addition, we considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of the interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. Similarly, we also considered the time-varying unmeasured confounding case, which is parameterized by an interaction term of $\lambda_{t} A_i$.
+In addition, we considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of the interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. Similarly, we also considered the time-varying unmeasured confounding case, which is parameterized by an interaction term of $\lambda_{t} A_i$, allowing the effect of unmeasured confounding on the outcome to vary through time. 
 
 The outcome variable, $Y_{it}$, is thus continuous and generated from the true model including: 
 
@@ -131,7 +131,7 @@ Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsi
 $$
 
 
-***Fixed effects (FE) model***: The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured confoundings remains questionable.   
+***Fixed effects (FE) model***: The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured confoundings (including interactions with treatment or time) remains questionable.   
 
 $$
 \begin{aligned}
@@ -150,7 +150,9 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 & \text{where } \alpha_i | D, X \overset{i.i.d}\sim N(\mu, \sigma^2)
 \end{aligned}
 $$
-The Bias-corrected RE model
+
+As shown by @hazlett2022understanding, there is an equivalence between RI and regularized FE models. Furthermore, it is shown that  a bias-corrected RE model with group-level means of $D_{it}$ could account for unit-specific unmeasured confounding in the same
+way that FE would: 
 
 $$
 \begin{aligned}
@@ -158,6 +160,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t} + \rho' \mathrm{\bar D}_{i} +
 & \text{where } \alpha_i | D, X \overset{i.i.d}\sim N(\mu, \sigma^2)
 \end{aligned}
 $$
+
 We use `lmer` from the `lme4` package to fit the random intercept model using REML. The frequentiest way of fitting random intercept models is often used and faster to compute, though it may not have as robust uncertainty quantification as the Bayesian hierarchical models.  
 
 \subsection{Binary Case}
@@ -170,8 +173,6 @@ RE: `glmer` from the `lme4`
 \section{Result}
 
 In Figure \ref{fig:all_bias_with_ols}, we show that 
-
-Figure \ref{fig:all_bias_without_ols}
 
 Figure \ref{fig:bias_with_t}
 
@@ -366,40 +367,6 @@ result_10_5_gamma2_phi0 %>% as_tibble() %>%
 ```
 
 
-```{r bias_correct, fig.cap="\\label{fig:bias_correct_RE} Distribution of bias via FE and Bias-corrected RE.", fig.width=10, fig.height=3.5, out.width="88%"}
-load("result_data/BC_result_10_5_gamma01_phi0.RData")
-load("result_data/BC_result_10_5_gamma05_phi0.RData")
-load("result_data/BC_result_10_5_gamma1_phi0.RData")
-load("result_data/BC_result_10_5_gamma2_phi0.RData")
-
-gridExtra::grid.arrange(
-  BC_result_10_5_gamma01_phi0 %>% as_tibble() %>%
-  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
-  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 0.1")),
-BC_result_10_5_gamma05_phi0 %>% as_tibble() %>%
-  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
-  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 0.5")),
-BC_result_10_5_gamma1_phi0 %>% as_tibble() %>%
-  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
-  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 1")),
-BC_result_10_5_gamma2_phi0 %>% as_tibble() %>%
-  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
-  mutate(Model = factor(Model))%>% 
-  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
-  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 2")),nrow = 1)
-```
-
-
 
 ```{r bias_rho, fig.cap="\\label{fig:bias_with_rho} Distribution of bias across true causal effects", fig.width=10, fig.height=3.5, out.width="88%"}
 load("result_data/result_10_5_gamma1_rho1.RData")
@@ -435,7 +402,27 @@ result_10_5_gamma1_rho7 %>% as_tibble() %>%
 ```
 
 
-```{r bias_interactions, fig.cap="\\label{fig:bias_interaction} Distribution of bias across coefficients of interactions.", fig.width=10, fig.height=9, out.width="98%"}
+```{r bias_interaction, fig.cap="\\label{fig:bias_interaction} Distribution of bias across coefficients of interactions.", fig.width=11, fig.height=6, out.width="85%"}
+load("result_data/bias_result_interaction_phi.RData")
+load("result_data/bias_result_interaction_beta.RData")
+gridExtra::grid.arrange(
+bias_result_interaction_phi %>% 
+  filter(phi <= 10) %>% 
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
+  ggplot(aes(x = phi, y = Bias, color = Model)) + geom_point() + geom_line() + labs(title = "Interaction between unmeasured confounding and treatment", x = expression(phi)) + facet_wrap(~confound_treatment), 
+bias_result_interaction_beta %>%   
+  filter(beta <= 10) %>% 
+  pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
+  mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',RE_bias = 'RE'))%>% 
+  ggplot(aes(x = beta, y = Bias, color = Model)) + geom_point() + geom_line() + labs(title = "Interaction between unmeasured confounding and time", x = expression(beta)) + facet_wrap(~confound_treatment))
+```
+
+```{r bias_interactions, fig.cap="\\label{fig:bias_interaction} Distribution of bias across coefficients of interactions.", fig.width=10, fig.height=9, out.width="85%"}
 load("result_data/result_5_3_gamma3_phi0.RData")
 load("result_data/result_5_3_gamma3_phi1.RData")
 load("result_data/result_5_3_gamma3_phi3.RData")
@@ -528,7 +515,8 @@ result_5_3_gamma3_phi5sq %>% as_tibble() %>%
   ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" = 5, Interaction: A^2*D")), nrow = 3)
 ```
 
-```{r bias_interactions_AT, fig.cap="\\label{fig:bias_AT_inter} Distribution of bias across coefficients of interaction between unmeasured confounding and time.", fig.width=10, fig.height=7, out.width="88%"}
+
+```{r bias_interactions_AT, fig.cap="\\label{fig:bias_AT_inter} Distribution of bias across coefficients of interaction between unmeasured confounding and time.", fig.width=10, fig.height=7, out.width="85%"}
 load("result_data/result_5_3_gamma1_beta1.RData")
 load("result_data/result_5_3_gamma1_beta3.RData")
 load("result_data/result_5_3_gamma1_beta5.RData")
@@ -589,7 +577,42 @@ result_10_5_gamma1_beta5 %>% as_tibble() %>%
   ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,18) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(beta~" = 5, T = 10")), nrow = 2)
 ```
 
-```{r bias_inter_BC, fig.cap="\\label{fig:bias_BiasCorrect_inter} Distribution of bias across coefficients of interactions.", fig.width=10, fig.height=3.5, out.width="88%"}
+
+
+```{r bias_correct, fig.cap="\\label{fig:bias_correct_RE} Distribution of bias via FE and Bias-corrected RE (No interaction in true model).", fig.width=10, fig.height=3.5, out.width="88%"}
+load("result_data/BC_result_10_5_gamma01_phi0.RData")
+load("result_data/BC_result_10_5_gamma05_phi0.RData")
+load("result_data/BC_result_10_5_gamma1_phi0.RData")
+load("result_data/BC_result_10_5_gamma2_phi0.RData")
+
+gridExtra::grid.arrange(
+  BC_result_10_5_gamma01_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
+  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 0.1")),
+BC_result_10_5_gamma05_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
+  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 0.5")),
+BC_result_10_5_gamma1_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
+  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 1")),
+BC_result_10_5_gamma2_phi0 %>% as_tibble() %>%
+  pivot_longer(cols = c("FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
+  mutate(Model = factor(Model))%>% 
+  mutate(Model = factor(Model, levels = c("FE_bias", "BCRE_bias")))%>%
+  mutate(Model = recode(Model, FE_bias = 'FE',BCRE_bias = 'BCRE'))%>%  
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias)) + ylim(-0.6,1) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(gamma~" = 2")),nrow = 1)
+```
+
+```{r bias_inter_BC, fig.cap="\\label{fig:bias_BiasCorrect_inter} Distribution of bias across coefficients of interactions, with RE model being bias corrected.", fig.width=10, fig.height=3.5, out.width="88%"}
 load("result_data/BC_result_5_3_gamma3_phi0.RData")
 load("result_data/BC_result_5_3_gamma3_phi1.RData")
 load("result_data/BC_result_5_3_gamma3_phi3.RData")
@@ -601,19 +624,19 @@ gridExtra::grid.arrange(
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "BCRE_bias")))%>%
    mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',BCRE_bias = 'BCRE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" =0, Interaction: A*D")),
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" = 0, Interaction: A*D")),
 BC_result_5_3_gamma3_phi1 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "BCRE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',BCRE_bias = 'BCRE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" =1, Interaction: A*D")),
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" = 1, Interaction: A*D")),
 BC_result_5_3_gamma3_phi3 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
   mutate(Model = factor(Model, levels = c("OLS_bias","FE_bias", "BCRE_bias")))%>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',BCRE_bias = 'BCRE'))%>% 
-  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" =3, Interaction: A*D")),
+  ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" = 3, Interaction: A*D")),
 BC_result_5_3_gamma3_phi5 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 
   mutate(Model = factor(Model))%>% 
@@ -621,7 +644,6 @@ BC_result_5_3_gamma3_phi5 %>% as_tibble() %>%
   mutate(Model = recode(Model, OLS_bias = 'OLS',FE_bias = 'FE',BCRE_bias = 'BCRE'))%>% 
   ggplot() + geom_boxplot(aes(x = Model, y = Bias))+ ylim(-0.5,5) + geom_hline(yintercept=0, linetype="dashed",color = "RED") + labs(title = expression(phi~" = 5, Interaction: A*D")), nrow = 1)
 ```
-
 
 
 \newpage
