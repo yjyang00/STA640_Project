@@ -195,15 +195,23 @@ Overall, our project and many literature suggest that while fixed/random effects
 
 \section{Appendix}
 
-```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="85%", eval = F}
+```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by degree to which A affects D.",fig.height=6, fig.width=11, out.width="95%", eval = T}
+load("result_data/bias_result_interaction_gamma.RData")
+# gridExtra::grid.arrange(
+# bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+#   filter(rho == 5) %>%
+#   ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
+# ,
+# bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
+#   filter(gamma == 5) %>%
+#   ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(rho)) )
+
 gridExtra::grid.arrange(
-bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
-  filter(rho == 5) %>%
-  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
+bias_result_interaction_gamma %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>%
+  filter(gamma != 5) %>% ggplot(aes(x = gamma, y = Bias, color = Model)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
 ,
-bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
-  filter(gamma == 5) %>%
-  ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(rho))
+bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>%
+  filter(gamma == 1) %>% ggplot(aes(x = rho, y = Bias, color = Model)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(rho))
 )
 ```
 

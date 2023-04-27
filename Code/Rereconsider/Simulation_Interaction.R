@@ -101,7 +101,7 @@ panel_bias_sim = function(S = 100, n, t, t_treat, delta, gamma, rho, phi, confou
 
 
 
-n <- 50 
+n <- 50
 t <- 10 
 t_treat <- 5
 delta <- 1
@@ -180,5 +180,7 @@ bias_result_interaction %>% pivot_longer(cols = c("OLS_CI", "FE_CI", "RE_CI"), n
   ggplot(aes(x = phi, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment)
 
 
-bias_result_interaction_gamma %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
-  ggplot(aes(x = gamma, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + theme_bw()
+bias_result_interaction_gamma %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>%
+  filter(gamma != 5) %>% ggplot(aes(x = gamma, y = Bias, color = Model)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
+
+# save(bias_result_interaction_gamma, file = "result_data/bias_result_interaction_gamma.RData")
