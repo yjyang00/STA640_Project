@@ -172,18 +172,17 @@ RE: `glmer` from the `lme4`
 \section{Result}
 
 
+Figure \ref{fig:all_bias_with_ols} shows average bias of estimated treatment effects from Did, FE, OLS, and RE estimation methods under three degrees to which A affects D with N = 100, t = 10 and t-treat = 5. With no interaction and no time-varying unmeasured confounders, DiD and FE model give unbiased estimate, and OLS model has the largest bias. As $\gamma$ increases, OLS bias keeps increasing in a linear trend while FE bias fluctuates at a small level. As $\rho$ increases, bias doesn't change with $\rho$.
 
-In Figure \ref{fig:all_bias_with_ols}, we show that with no interaction and no time-varying unmeasured confounders, the DiD and fixed effect model give unbiased estimate. Specifically, the bias of fixed effects model and DiD estimator are the smallest which fluctuate around 0, followed by the random effects model. OLS model has the largest bias. As the degree to which unmeasured confounders affect treatment increases, the OLS bias keeps increasing in a linear trend while the bias of fixed effects model fluctuates at a small level. 
+Figure \ref{fig:bias_with_t} shows distribution of bias across varying total time points. With no interaction and no time-varying unmeasured confounders, FE model gives unbiased estimate, RE model has higher bias, and OLS has the largest bias. As $T$, the number of time points increases, RE bias decreases, which may result from increasing number of data points.
 
-In Figure \ref{fig:bias_with_t}, the fixed effect model has unbiased estimate when the unmeasured confounders are not time-varying and there is no interaction term. The bias of random effects model is greater than that of fixed effects model and smaller than OLS bias. In addition, as the time point $T$ increases, there is a decreasing trend in the bias of random effects model, which can result from a larger number of time points. 
+Figure \ref{fig:bias_with_t_treat} shows distribution of bias across varying treatment time points with $T=20$. Similarly, FE model gives unbiased estimate, RE model has higher bias, and OLS has the largest bias. As the treatment time points increases from 3 to 18, bias of RE model decreases.
 
-Figure \ref{fig:bias_with_t_treat} presents the distribution of bias under different treatment time points. With time point $T$ fixed to be 20, the fixed effect bias is unbiased and the random effect bias falls between the fixed effect bias and OLS bias. As the treatment time points increase from 3 to 18, the bias of random effects model decreases. 
+Figure \ref{fig:bias_with_gamma} shows distribution of bias across varying unmeasured confounding coefficients. FE model gives unbiased estimate. As $\gamma$, the coefficient by which unmeasured confounders affect outcome increases, bias of OLS and RE model both increases, and bias of OLS model increases rapidly.
 
-Figure \ref{fig:bias_with_gamma}
+Figure \ref{fig:bias_with_rho} shows distribution of bias across varying true causal effects. Under different values of $\rho$ by which treatment affects outcome, bias of the three models doesn't change.
 
-Figure \ref{fig:bias_with_rho}
-
-In Figure \ref{fig:bias_interaction}, we show that even fixed effects models are not able to unbiasedly estimate the treatment effects when there are interaction terms between the unmeasured confounding and treatment assignment or time. Specifically, Figure \ref{fig:bias_AD_interaction} and \ref{fig:bias_AT_interaction} ... 
+In Figure \ref{fig:bias_interaction}, we show that even fixed effects models are not able to unbiasedly estimate the treatment effects when there are interaction terms between the unmeasured confounding and treatment assignment or time. Specifically, Figure \ref{fig:bias_AD_interaction} and \ref{fig:bias_AT_interaction} both show that the bias increases as $\phi$ and $\beta$ increases. The reason why we see 
 
 Bias-corrected random effects models: Figure \ref{fig:bias_BiasCorrect_RE} and Figure \ref{fig:bias_BiasCorrect_RE_interaction}
 
@@ -220,6 +219,16 @@ load("result_data/bias_result_interaction_gamma.RData")
 # bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
 #   filter(gamma == 5) %>%
 #   ggplot(aes(x = rho, y = Bias, color = Bias_Type)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(rho)) )
+
+bias_result_interaction_gamma$confound_treatment = factor(bias_result_interaction_gamma$confound_treatment)
+levels(bias_result_interaction_gamma$confound_treatment)[levels(bias_result_interaction_gamma$confound_treatment)=="Small"] <- "Small effect of A on D"
+levels(bias_result_interaction_gamma$confound_treatment)[levels(bias_result_interaction_gamma$confound_treatment)=="Strong"] <- "Strong effect of A on D"
+levels(bias_result_interaction_gamma$confound_treatment)[levels(bias_result_interaction_gamma$confound_treatment)=="Very Strong"] <- "p = A ~ Uniform(0,1)"
+
+bias_result_full$confound_treatment = factor(bias_result_full$confound_treatment)
+levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_treatment)=="Small"] <- "Small effect of A on D"
+levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_treatment)=="Strong"] <- "Strong effect of A on D"
+levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_treatment)=="Very Strong"] <- "p = A ~ Uniform(0,1)"
 
 gridExtra::grid.arrange(
 bias_result_interaction_gamma %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>%
