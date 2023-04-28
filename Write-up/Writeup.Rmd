@@ -173,11 +173,11 @@ RE: `glmer` from the `lme4`
 
 
 
-In Figure \ref{fig:all_bias_with_ols}, we show that 
+In Figure \ref{fig:all_bias_with_ols}, we show that with no interaction and no time-varying unmeasured confounders, the DiD and fixed effect model give unbiased estimate. Specifically, the bias of fixed effects model and DiD estimator are the smallest which fluctuate around 0, followed by the random effects model. OLS model has the largest bias. As the degree to which unmeasured confounders affect treatment increases, the OLS bias keeps increasing in a linear trend while the bias of fixed effects model fluctuates at a small level. 
 
-Figure \ref{fig:bias_with_t}
+In Figure \ref{fig:bias_with_t}, the fixed effect model has unbiased estimate when the unmeasured confounders are not time-varying and there is no interaction term. The bias of random effects model is greater than that of fixed effects model and smaller than OLS bias. In addition, as the time point $T$ increases, there is a decreasing trend in the bias of random effects model, which can result from a larger number of time points. 
 
-Figure \ref{fig:bias_with_t_treat}
+Figure \ref{fig:bias_with_t_treat} presents the distribution of bias under different treatment time points. With time point $T$ fixed to be 20, the fixed effect bias is unbiased and the random effect bias falls between the fixed effect bias and OLS bias. As the treatment time points increase from 3 to 18, the bias of random effects model decreases. 
 
 Figure \ref{fig:bias_with_gamma}
 
