@@ -25,7 +25,6 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
   phi <- 0
   beta <- 0
   
-  A <- runif(n, 0, 1)
   X <- runif(n, 0, 10)
   
   X_it = c()
@@ -33,30 +32,19 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
     X_it = c(X_it, rnorm(n = t, mean = X[j], sd = 1))
   }
   
-  p = A
-  D <- rbinom(n, 1, p)
+  A <- rnorm(n, 0, 1)
+  alpha_a <- rnorm(n, 0, 1)
+  beta_a <- 1
   
-  
-  dat = tidyr::expand_grid(data.frame(id = 1:n, A = A, D = D), Time = 1:t) %>% 
+  dat = tidyr::expand_grid(data.frame(id = 1:n, A, alpha_a), Time = 1:t) %>% 
+    mutate(epsilon_a = rnorm(n*t, mean = 0, sd = 1)) %>% 
+    mutate(D_it = alpha_a + beta_a*A + epsilon_a) %>% 
     mutate(X_it = X_it) %>% 
     mutate(time = factor(Time), id = factor(id)) %>% 
-    mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
-    mutate(D_it = D * Time_to_treat) %>% 
-    mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
-    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*A*D_it + beta*A*Time + epsilon) %>% 
-    dplyr::group_by(id) %>% mutate(D_i_bar = mean(D_it)) %>% ungroup()
-  
+    mutate(epsilon_y = rnorm(n*t, mean = 0, sd = 1)) %>% 
+    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*A*D_it + beta*A*Time + epsilon_y)
+    
   # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_line() + facet_wrap(~factor(D))
-
-  # DID estimator
-  bar_Y_1_t2 = dat %>% filter(Time == t_treat, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
-  bar_Y_1_t1 = dat %>% filter(Time == t_treat-1, D == 1) %>% summarise(mean(Y)) %>% as.numeric()
-  
-  bar_Y_0_t2 = dat %>% filter(Time == t_treat, D == 0) %>% summarise(mean(Y)) %>% as.numeric()
-  bar_Y_0_t1 = dat %>% filter(Time == t_treat-1, D == 0) %>% summarise(mean(Y)) %>% as.numeric()
-  
-  DID_est = (bar_Y_1_t2 - bar_Y_1_t1) - (bar_Y_0_t2 - bar_Y_0_t1)
-  DID_bias = DID_est - rho
   
   # OLS
   mod0 = lm(Y ~ X_it + time + D_it, dat)
