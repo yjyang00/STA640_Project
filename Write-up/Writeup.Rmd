@@ -173,8 +173,9 @@ We use `lm` to fit OLS and fixed effects models and `lmer` from the `lme4` packa
 
 For each of the setting and estimator described above, we compute an average estimate, bias and 95% confidence interval of the treatment effect based on 1000 simulations of data generation and model fitting. There are some interesting results elaborated below. 
 
-First of all, Figure \ref{fig:all_bias_with_ols} describes the average bias of estimated treatment effects from DID, FE, OLS, and RE estimation methods under three degrees to which A affects D with `N` = 100, `T` = 10 and `T-treat` = 5. 
-Assuming no interaction and no time-varying unmeasured confounders, DID and FE model give unbiased estimates, while the OLS model has the largest bias. Specifically, as the effect of A on D increases, both the OLS and RE bias increase. As $\rho$ increases, each bias fluctuates at a steady level with DID bias $\approx$ FE bias < RE bias < OLS bias holding true.
+\subsection{No interaction and no time-varying unmeasured confounders}
+
+First of all, Figure \ref{fig:all_bias_with_ols} describes the average bias of estimated treatment effects from DID, FE, OLS, and RE estimation methods under three degrees to which A affects D with `N` = 100, `T` = 10 and `T-treat` = 5. DID and FE model give unbiased estimates, while the OLS model has the largest bias. Specifically, as the effect of A on D increases, both the OLS and RE bias increase. As $\rho$ increases, each bias fluctuates at a steady level with DID bias $\approx$ FE bias < RE bias < OLS bias holding true.
 
 Figure \ref{fig:bias_with_t} shows the distribution of bias across varying total time points. 
 With no interaction and no time-varying unmeasured confounders, FE model still provides an unbiased estimate, while RE model has higher bias and OLS model gives the largest bias. Notably, as the number of time points (`T`) increases, the RE bias decreases, which may result from increasing number of data points.
@@ -189,10 +190,16 @@ FE model gives unbiased estimate. As $\gamma$, the coefficient by which unmeasur
 Figure \ref{fig:bias_with_rho} shows distribution of bias across varying true causal effects. 
 Under different values of $\rho$ by which treatment affects outcome, bias of the three models does not change.
 
+\subsection{With interaction and time-varying unmeasured confounders}
+
 Figure \ref{fig:bias_interaction} demonstrates that even fixed effects models are not able to estimate the treatment effects unbiasedly when there are interaction terms between the unmeasured confounding and treatment assignment or time. 
 Specifically, Figure \ref{fig:bias_AD_interaction} presents the distribution of bias under different $\phi$ and three types of interactions ($\phi A_i D_{it}$, $\phi A_i^2 D_{it}$ and $\phi \frac{ 1}{A_i}D_{it}$). 
 Under the same type of interaction, all three biases increase as $\phi$ increases, with FE bias < RE bias < OLS bias always holding true. 
-The deviation of the FE bias from 0 is reasonable since fixed effects can no longer absorb the unmeasured confounders under large $\phi$. In addition, a similar pattern is displayed in \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. 
+The deviation of the FE bias from 0 is reasonable since the FE model assumes \[\alpha_i = \alpha+A_i(\gamma+\phi D_{it})
+\]
+When $\phi$ is large, fixed effects can no longer absorb the unmeasured confounders, which results in the biased estimate.
+
+In addition, a similar pattern is displayed in Figure \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. 
 This is because large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
 
 Bias-corrected random effects models: Figure \ref{fig:bias_correct_RE} and Figure \ref{fig:bias_BiasCorrect_inter}
