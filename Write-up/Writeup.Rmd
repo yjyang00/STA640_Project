@@ -202,12 +202,15 @@ When $\phi$ is large, fixed effects can no longer absorb the unmeasured confound
 In addition, a similar pattern is displayed in Figure \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. 
 This is because large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
 
-Bias-corrected random effects models: Figure \ref{fig:bias_correct_RE} and Figure \ref{fig:bias_BiasCorrect_inter}
+\subsection{Bias-corrected random effects model}
+
+Figure \ref{fig:bias_correct_RE} and Figure \ref{fig:bias_BiasCorrect_inter} demonstrates the performance of the bias-corrected RE model with group-level treatment means. Figure \ref{fig:bias_correct_RE} shows the distribution of bias from FE and bias-corrected RE model when true model doesn't have interaction. FE and bias-corrected RE models both give unbiased estimate under different values of $\gamma$. Figure \ref{fig:bias_BiasCorrect_inter} shows the distribution of bias from OLS, FE, and bias-corrected RE model across different coefficients of interactions. As the interaction coefficient increases, bias from the three models all increases. OLS model has the largest bias as before, and FE and bias-corrected RE model have similar bias lower than that from OLS model.
 
 
 
 \section{Discussion}
 
+We have described and presented the relationship between fixed/random effects and unmeasured confounding in panel data. The simulation result suggests that using fixed/random effects models can partly tackle the issue of unmeasured confounding. Nevertheless, the fixed effects are unable to absorb the unmeasured confounding when the interaction between unmeasured confounding and treatment/time exists, which result in the biased estimate.
 
 Limitation and further direction: 
 
