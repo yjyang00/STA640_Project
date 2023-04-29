@@ -199,8 +199,9 @@ The deviation of the FE bias from 0 is reasonable since the FE model assumes $$\
 
 When $\phi$ is large, fixed effects can no longer absorb the unmeasured confounders, which results in the biased estimate.
 
-In addition, a similar pattern is displayed in Figure \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. 
-This is because large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
+In addition, a similar pattern is displayed in Figure \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. It is reasonable because the FE model assumes $$\alpha_i = \alpha+A_i(\gamma+\beta \lambda_{t})$$
+
+Large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
 
 \subsection{Bias-corrected random effects model}
 
@@ -212,9 +213,8 @@ Figure \ref{fig:bias_correct_RE} and Figure \ref{fig:bias_BiasCorrect_inter} dem
 
 We have described and presented the relationship between fixed/random effects and unmeasured confounding in panel data. The simulation result suggests that using fixed/random effects models can partly tackle the issue of unmeasured confounding. Specifically, when there is no interaction between unmeasured confounding and treatment/time, FE model gives approximately unbiased estimate, while RE model has biased estimate. Nevertheless, the fixed effects are unable to absorb the unmeasured confounding when the interaction exists, which result in the biased estimate. By exploring the performance of bias corrected random effects model with group level treatment means, we have found that BCRE model improves the performance of RE model and has similar bias to the FE model.
 
-This paper does not provide the closed form of the asymptotic bias. @li2020impact derived the closed form of bias in the presence of unmeasured within- and/or between-cluster confounders when the treatment is continuous. 
-Particularly, the formula suggests a positive linear relationship between the coefficient of unmeasured confounder and the bias. 
-However, under a different assumption that the treatment is binary, this paper presents a slightly different pattern that the RE bias first increases and then decreases as coefficient of unmeasured confounder $\gamma$ grows larger. 
+When unmeasured confounder is time-varying and interacts with treatment assignment, the closed form of the asymptotic bias is complicated to derive, particularly in RE models. Nevertheless, @li2020impact detailedly illustrates the closed form of bias in the presence of unmeasured within- and/or between-cluster confounders when the treatment is continuous. 
+Particularly, the formula suggests a positive linear relationship between the coefficient of unmeasured confounder and the bias. However, under a different assumption that the treatment is binary, this paper presents a slightly different pattern that the RE bias first increases and then decreases as coefficient of unmeasured confounder $\gamma$ grows larger. 
 More work can be done regarding the closed form of bias under binary treatment and will be helpful for obtaining insights of asymptotic behavior of the bias.
 
 We outline the following aspects as future research directions: Firstly, fixed/random effects models do not estimate the strength of unmeasured confounders as latent variable on the outcome. Other models including instrumental variable (IV) may be able to address the inadequancy.
