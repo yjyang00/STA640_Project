@@ -1,5 +1,5 @@
 ---
-title: "Demystifying the Relationship Between Fixed/Random Effects and Unmeasured Confounding in Panel Data Analysis"
+title: ""
 author: "Yicheng Shen, Yanjiao Yang, Huiying Lin"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 header-includes:
@@ -172,9 +172,9 @@ We use `lmer` from the `lme4` package to fit the random intercept model using RE
 \section{Result}
 
 
-Figure \ref{fig:all_bias_with_ols} shows average bias of estimated treatment effects from Did, FE, OLS, and RE estimation methods under three degrees to which A affects D with N = 100, t = 10 and t-treat = 5. With no interaction and no time-varying unmeasured confounders, DiD and FE model give unbiased estimate, and OLS model has the largest bias. As $\gamma$ increases, OLS bias keeps increasing in a linear trend while FE bias fluctuates at a small level. As $\rho$ increases, bias doesn't change with $\rho$.
+Figure \ref{fig:all_bias_with_ols} shows the average bias of estimated treatment effects from DiD, FE, OLS, and RE estimation methods under three degrees to which A affects D with N = 100, t = 10 and t-treat = 5. Assuming no interaction and no time-varying unmeasured confounders, DiD and FE model give unbiased estimates, while the OLS model has the largest bias. Specifically, as the effect of A on D increases, both the OLS and RE bias increase. As $\rho$ increases, each bias fluctuates at a steady level with DiD bias $\approx$ FE bias < RE bias < OLS bias holding true.
 
-Figure \ref{fig:bias_with_t} shows distribution of bias across varying total time points. With no interaction and no time-varying unmeasured confounders, FE model gives unbiased estimate, RE model has higher bias, and OLS has the largest bias. As $T$, the number of time points increases, RE bias decreases, which may result from increasing number of data points.
+Figure \ref{fig:bias_with_t} shows distribution of bias across varying total time points. With no interaction and no time-varying unmeasured confounders, FE model provides an unbiased estimate, while RE model has higher bias and OLS model gives the largest bias. Notably, as the number of time points ($T$) increases, the RE bias decreases, which may result from increasing number of data points.
 
 Figure \ref{fig:bias_with_t_treat} shows distribution of bias across varying treatment time points with $T=20$. Similarly, FE model gives unbiased estimate, RE model has higher bias, and OLS has the largest bias. As the treatment time points increases from 3 to 18, bias of RE model decreases.
 
@@ -182,7 +182,7 @@ Figure \ref{fig:bias_with_gamma} shows distribution of bias across varying unmea
 
 Figure \ref{fig:bias_with_rho} shows distribution of bias across varying true causal effects. Under different values of $\rho$ by which treatment affects outcome, bias of the three models doesn't change.
 
-In Figure \ref{fig:bias_interaction}, we show that even fixed effects models are not able to unbiasedly estimate the treatment effects when there are interaction terms between the unmeasured confounding and treatment assignment or time. Specifically, Figure \ref{fig:bias_AD_interaction} and \ref{fig:bias_AT_interaction} both show that the bias increases as $\phi$ and $\beta$ increases. The reason why we see 
+Figure \ref{fig:bias_interaction} demonstrates that even fixed effects models are not able to estimate the treatment effects unbiasedly when there are interaction terms between the unmeasured confounding and treatment assignment or time. Specifically, Figure \ref{fig:bias_AD_interaction} presents the distribution of bias under different $\phi$ and three types of interactions ($\frac{1}{A}D$, $AD$, $A^2D$). Under the same type of interaction, all three biases increase as $\phi$ increases, with FE bias < RE bias < OLS bias always holding true. The deviation of the FE bias from 0 is reasonable since fixed effects can no longer absorb the unmeasured confounders under large $\phi$. In addition, a similar pattern is displayed in \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. This is because large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
 
 Bias-corrected random effects models: Figure \ref{fig:bias_BiasCorrect_RE} and Figure \ref{fig:bias_BiasCorrect_RE_interaction}
 
