@@ -75,7 +75,7 @@ knitr::include_graphics("Image/DAG.png")
 While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment or time.
 
 
-\subsection{Continuous Case}
+\subsection{Data Generation Process}
 
 In the case of continous outcomes, our data generation process (DGP) uses the following specifications:
 <!-- E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\ -->
@@ -107,7 +107,7 @@ The outcome variable, $Y_{it}$, is thus continuous and generated from the true m
 * The noise term, $\epsilon_{it}$, is set to follow $\epsilon_{it} \overset{i.i.d}\sim N(0,1)$. 
 
 
-**Estimators**
+\subsection{Estimators}
 
 There are several distinct methods that allow for estimations of treatment effects. Our primary objective is to assess the performance of these models under a range of diverse circumstances.
 
@@ -162,11 +162,11 @@ $$
 
 We use `lmer` from the `lme4` package to fit the random intercept model using REML. The frequentiest way of fitting random intercept models is often used and faster to compute, though it may not have as robust uncertainty quantification as the Bayesian hierarchical models.  
 
-\subsection{Binary Case}
+<!-- \subsection{Binary Case} -->
 
-FE: logit(Y) = ...
+<!-- FE: logit(Y) = ... -->
 
-RE: `glmer` from the `lme4`
+<!-- RE: `glmer` from the `lme4` -->
 
 
 \section{Result}
