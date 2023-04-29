@@ -65,7 +65,7 @@ As such, our projects seeks to unravel the trends of potential bias, if it exist
 
 In this project, we investigate our research question through a series of simulation studies, with the aim of demonstrating the degree to which the fixed/random effects models estimate causal effects that align with the truth. Moreover, we also want to identify any contributing factors that could impact the magnitude of bias in these estimations.
 
-```{r DAG, fig.cap="\\label{fig:causal_DAG} Visualize the problem of unmeasured confoudning using a causal DAG.",out.width="50%"}
+```{r DAG, fig.cap="\\label{fig:causal_DAG} Visualize the data structure and the problem of unmeasured confoudning using a causal DAG.",out.width="61%"}
 knitr::include_graphics("Image/DAG.png")
 ```
 
