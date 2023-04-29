@@ -7,7 +7,7 @@ header-includes:
     - \setlength{\parindent}{2em}
     - \usepackage{indentfirst}
     - \usepackage{float}
-    - \usepackage{setspace}\onehalfspacing
+    # - \usepackage{setspace}\onehalfspacing
 output: 
   pdf_document: 
     extra_dependencies: ["float"]
@@ -28,56 +28,52 @@ knitr::opts_chunk$set(fig.align = 'center')
 knitr::opts_chunk$set(fig.pos = "H")
 
 load("bias_result_full.RData")
-bias_result_full$confound_treatment = factor(bias_result_full$confound_treatment)
-levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_treatment)=="Uniform"] <- "Very Strong"
 ```
 
 
 \section{Introduction}
 
-Panel data analysis is a widely used statistical tool in social sciences, econometrics and ecology to study the relationships between variables over time. However, this type of analysis is susceptible to confounding variables, which can bias the estimated coefficients and distort the causal interpretation of the results. 
-Fixed and random effects models frequently emerge in panel data analysis to account for confounding variables that are time-invariant [@gunasekara2014fixed] or time-varying [@li2011nonpara; @ahn2013panel]. 
+Panel data analysis is a widely used statistical tool in econometrics, ecology and broader social sciences to study the relationships between variables and reveal the effects of particular treatments over time. However, this type of analysis is often susceptible to confounding variables, which can bias the estimated coefficients and distort the causal interpretation of the results. 
+Fixed and random effects models frequently emerge in the panel data analysis to account for latent confounding variables that are time-invariant [@gunasekara2014fixed] or time-varying [@li2011nonpara; @ahn2013panel]. 
 A common belief among econometricians is that fixed effects (FE) or random effects (RE) models can absorb unmeasured confounding variables [@angrist2009mostly], but the mechanism behind this claim is mysterious and not well-understood. 
-In this research paper, we aim to explore the relationship between fixed/random effects and time-invariant unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.
+In this research paper, we aim to explore the relationship between fixed/random effects and the problem of unmeasured confounding in panel data analysis and provide insights into whether and in what sense these models can address this issue.
 
-
-Based on the results of our simulations, we found that the implementation of fixed/random effects models can, to a certain extent, address the presence of unmeasured confoundings. However, there remains some systematic bias due to the correlations and interactions between the unmeasured confounding and the treatment assignment. Specifically, factors such as the size, time span and treatment time points of the panel data, the magnitude of the unmeasured confounding, and the extent to which it impacts both the treatment and the outcome all play important roles in influencing the degree of bias present in the causal estimations from fixed/random effects models.
+Based on the results of our simulations, we found that the implementation of fixed/random effects models can, to a certain extent, address the presence of unmeasured confounding. However, there remains some systematic bias due to the correlations and interactions between the unmeasured confounding and the treatment assignment or time. Specifically, factors such as the size, time span and treatment time points of the panel data, the magnitude of the unmeasured confounding, and the extent to which it impacts both the treatment and the outcome all play important roles in influencing the degree of bias present in the causal estimations from fixed/random effects models.
 
 
 
 \section{Background}
 
-In typical observational studies, failing to capture significant unmeasured confounding gives rise to biased estimates of treatment effects, which compels practitioners to develop methods of assessing and handling uncontrolled confounding [@vanderweele2011unmeasured]. 
-The question of whether fixed/random effects models can account for unmeasured confounding in panel data analysis has been the subject of much debate particuarly in the econometrics literature. 
+In typical observational studies, failing to capture significant unmeasured confounding gives rise to biased estimates of treatment effects, which compels practitioners to develop methods of assessing and handling any potential unmeasured confounding [@vanderweele2011unmeasured]. 
+The question of whether fixed/random effects models can account for unmeasured confounding in panel data analysis has been the subject of much debate particularly in the econometrics literature. 
 A number of studies have explored this issue from different angles and with varying degrees of empirical evidence.
 
 One line of research has focused on theoretical arguments for why fixed/random effects models might be effective at absorbing unmeasured confounding. 
-For example, @angrist2009mostly discuss the strategies that use data with a time or cohort dimension to control for unobserved-but-fixed omitted variables.
+For example, @angrist2009mostly discuss the FE strategies that use data with a time or cohort dimension to control for unobserved-but-fixed omitted variables.
 @hausman1981panel argue that fixed effects models can control for the time-invariant confounders by essentially differencing them out, while random effects models can account for time-varying confounders that are uncorrelated with the fixed effects. More recently, @wooldridge2010econometric has suggested that fixed effects models can be viewed as a form of quasi-experimental design that mimics a randomized controlled trial, and thus can address the unobserved component to the extent that such designs do.
 
-Other scholars have openly challenged the notion that fixed/random effects models can fully absorbing unmeasured confounding. For example, @mundlak1978pooling once argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot correctly estimate time-invariant confoundings. 
+Other scholars have openly challenged the notion that fixed/random effects models can fully absorbing unmeasured confounding. For example, @mundlak1978pooling once argued that random effects models are biased when unobserved heterogeneity is correlated with observed variables, and that fixed effects models are limited by the fact that they cannot separately estimate time-invariant unmeasured confoundings. 
 @hazlett2022understanding point out that random effect estimates in multilevel models are equivalent to fixed effects estimates that have been shrunken through a regularization process. When the source of unmeasured confounding is at the group-level, the FE approach could unbiasedly estimates treatment effects, but with poor estimates of standard errors. Bias takes place in random effects models because their variables are not “allowed” to adjust for confounding as intended and thus fails to remove the unmeasured confounding.
 Furthermore, @bell2015explaining note that while fixed effects models can provide reasonable estimates of treatment effects, they may still suffer from omitted variable bias if the unobserved confounding variable is correlated with the time-varying variables.
 
 Therefore, the effectiveness of fixed/random effects models in accounting for unmeasured confounding and obtaining unbiased estimates of treatment effects in panel data analysis remains a topic of ongoing research and debate.
-As such, our projects seeks to explore the trends of potential bias when applying fixed/random effects models in the events of unmeasured confounding.
+As such, our projects seeks to unravel the trends of potential bias, if it exists, when applying fixed/random effects models in the events of unmeasured confounding.
 
 
 
 \section{Method}
 
-In this project, we investigate our research question through a simulation study, with the aim of demonstrating the degree to which the fixed/random effects models estimate causal effects that align with the truth. Moreover, we also seek to identify any contributing factors that could potentially impact the magnitude of bias in these estimations.
+In this project, we investigate our research question through a series of simulation studies, with the aim of demonstrating the degree to which the fixed/random effects models estimate causal effects that align with the truth. Moreover, we also want to identify any contributing factors that could impact the magnitude of bias in these estimations.
 
-```{r DAG, fig.cap="\\label{fig:causal_DAG} Visualize the problem of unmeasured confoudning using a causal DAG",out.width="50%"}
+```{r DAG, fig.cap="\\label{fig:causal_DAG} Visualize the problem of unmeasured confoudning using a causal DAG.",out.width="50%"}
 knitr::include_graphics("Image/DAG.png")
 ```
 
-While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment or time.
-
+While many previous work presume that specifying an intercept for every individual in the study (using either FE or RE model) is an appropriate method to address any unmeasured confoundings, the proposed methods either have strict assumptions or do not seem to take into account of the relationship and possible interactions between the unmeasured confounding and the treatment or time. As portrayed in the DAG of Figure \ref{fig:causal_DAG}, it is rarely the case that the unmeasured confounder affects the outcome alone. In fact, there is usually time-varying unmeasured confounder that exerts effects on both the treatment assignments and the outcomes in real-life panel data [@imbens2021controlling]. 
 
 \subsection{Data Generation Process}
 
-In the case of continous outcomes, our data generation process (DGP) uses the following specifications:
+We restrict our main discussion about artificial panel data with binary treatment assignments and continuous confoundings and outcomes. Our data generation process (DGP) uses the following specifications as the true model behind the scene:
 <!-- E\left(\mathrm{Y}_{i t} \mid A_i, \mathrm{X}_{i t}, t, \mathrm{D}_{i t}\right)& =\alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \gamma A_i+ \delta \mathrm{X}_{i t} \\ -->
 $$
 \begin{aligned}
@@ -85,18 +81,22 @@ Y_{it} &= \alpha+\lambda_t+ \delta \mathrm{X}_{i t}+\rho \mathrm{D}_{i t}+ \gamm
 \end{aligned}
 $$
 
-In our most basic DGP setup of artificial panel data, there are $N = 100$ individuals and $T = 10$ time points. At half time ($\frac{T}{2}$), a binary treatment is given to those in the treatment group. Covariate, $X$, for each individual is simulated from $N(0,1)$. The unmeasured counfounding, $A_i$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. Notice that $A_i$ is a latent, unit-specific trait that is unobservable during modeling fitting.  
+In our most basic DGP setup of artificial panel data, there are `N` = 100 individuals and `T` = 10 time points. We also designate `T-treat` as the half time ($\frac{T}{2}$), when the binary treatment is given to those in the treatment group. 
+Each individual has $X_i \overset{i.i.d}{\sim} \text{Uniform(0, 10)}$ as their average covariate. $X_{it}$, for each individual at each timepoint is then simulated from $N(X_i,1)$. 
+The unmeasured counfounding, $A_i$, is either from $N(0,1)$ or $\text{Uniform(0,1)}$. Notice that $A_i$ is a latent, unit-specific trait that is only used in data generation and unobservable during modeling fitting.  
 
 We designed two ways that the unmeasured confounding, $A_i$, could affect the treatment assignment,$D_{it}$: First, as $A_i\sim N(0,1)$ is above or below a certain cut-off point, the probability of receiving the treatment changes to respective values. This is controllable since we can adjust the respective values to be widely apart (`strong` influence of A on D) or to be close (`small` influence of A on D).
-Second, $A_i\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as `very strong` influence of A on D.  
+Second, $A_i\sim \text{Uniform}(0,1)$ directly serves as the probability of receiving the treatment. We regard this as more direct influence of A on D.  
 
-In addition, we considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of the interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. Similarly, we also considered the time-varying unmeasured confounding case, which is parameterized by an interaction term of $\lambda_{t} A_i$, allowing the effect of unmeasured confounding on the outcome to vary through time. 
+In addition, we considered the potential interaction effects from unmeasured confounding and treatment on the outcome. There are three specifications of this interaction term: (1) $\phi A_i D_{it}$, (2) $\phi A_i^2 D_{it}$ and (3) $\phi \frac{ 1}{A_i}D_{it}$, which cover the identity, square and inverse transformation of unmeasured confounding. Similarly, we also simulated the time-varying unmeasured confounding case, which is parameterized by an interaction term of $\lambda_{t} A_i$, allowing the effect of unmeasured confounding on the outcome to vary through time. 
 
-The outcome variable, $Y_{it}$, is thus continuous and generated from the true model including: 
+\ 
+
+The outcome variable, $Y_{it}$, is thus continuous and generated from the linear model including: 
 
 * The true coefficient for covariate, $\delta$, is chosen arbitrarily as 1 or 5. 
 
-* The true treatment effect, i.e. the coefficient of treatment status, $\rho$, could vary from to 1 to 20.
+* The true treatment/causal effect, i.e. the coefficient of treatment status, $\rho$, could vary from to 1 to 20.
 
 * The true coefficient of unmeasured confounding, $\gamma$, could vary from to 0 to 20, with zero meaning that there is no direct effect of unmeasured confounding on the outcome. 
 
@@ -131,7 +131,7 @@ Y_{it} &= \alpha+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \epsi
 $$
 
 
-***Fixed effects (FE) model***: The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured confoundings (including interactions with treatment or time) remains questionable.   
+***Fixed effects (FE) model***: The formulation and validity of the fixed effects model are discussed extensively in the literature. Despite that, whether the individual intercepts can fully absorb all types of unmeasured components (including interactions with treatment or time) remains questionable.   
 
 $$
 \begin{aligned}
@@ -151,7 +151,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t}+ \delta \mathrm{X}_{i t}+ \ep
 \end{aligned}
 $$
 
-As shown by @hazlett2022understanding, there is an equivalence between RI and regularized FE models. Furthermore, it is shown that  a bias-corrected RE model with group-level means of $D_{it}$ could account for unit-specific unmeasured confounding in the same way that FE would: 
+As shown by @hazlett2022understanding, there is an equivalence between RI and regularized FE models. Moreover, it is further shown that a bias-corrected version of RE model with group-level means of $D_{it}$ could account for unit-specific unmeasured confounding in the same way that FE would: 
 
 $$
 \begin{aligned}
@@ -160,7 +160,7 @@ Y_{it} &= \alpha_i+\lambda_t+\rho \mathrm{D}_{i t} + \rho' \mathrm{\bar D}_{i} +
 \end{aligned}
 $$
 
-We use `lmer` from the `lme4` package to fit the random intercept model using REML. The frequentiest way of fitting random intercept models is often used and faster to compute, though it may not have as robust uncertainty quantification as the Bayesian hierarchical models.  
+We use `lm` to fit OLS and fixed effects models and `lmer` from the `lme4` package to fit the random intercept model using REML. The frequentiest way of fitting random intercept models is commonly employed and faster to compute, though it may not have as robust uncertainty quantification as the Bayesian hierarchical models.  
 
 <!-- \subsection{Binary Case} -->
 
@@ -169,22 +169,34 @@ We use `lmer` from the `lme4` package to fit the random intercept model using RE
 <!-- RE: `glmer` from the `lme4` -->
 
 
-\section{Result}
+\section{Results}
 
+For each of the setting and estimator described above, we compute an average estimate, bias and 95% confidence interval of the treatment effect based on 1000 simulations of data generation and model fitting. There are some interesting results elaborated below. 
 
-Figure \ref{fig:all_bias_with_ols} shows the average bias of estimated treatment effects from DiD, FE, OLS, and RE estimation methods under three degrees to which A affects D with N = 100, t = 10 and t-treat = 5. Assuming no interaction and no time-varying unmeasured confounders, DiD and FE model give unbiased estimates, while the OLS model has the largest bias. Specifically, as the effect of A on D increases, both the OLS and RE bias increase. As $\rho$ increases, each bias fluctuates at a steady level with DiD bias $\approx$ FE bias < RE bias < OLS bias holding true.
+First of all, Figure \ref{fig:all_bias_with_ols} describes the average bias of estimated treatment effects from DID, FE, OLS, and RE estimation methods under three degrees to which A affects D with `N` = 100, `T` = 10 and `T-treat` = 5. 
+Assuming no interaction and no time-varying unmeasured confounders, DID and FE model give unbiased estimates, while the OLS model has the largest bias. Specifically, as the effect of A on D increases, both the OLS and RE bias increase. As $\rho$ increases, each bias fluctuates at a steady level with DID bias $\approx$ FE bias < RE bias < OLS bias holding true.
 
-Figure \ref{fig:bias_with_t} shows distribution of bias across varying total time points. With no interaction and no time-varying unmeasured confounders, FE model provides an unbiased estimate, while RE model has higher bias and OLS model gives the largest bias. Notably, as the number of time points ($T$) increases, the RE bias decreases, which may result from increasing number of data points.
+Figure \ref{fig:bias_with_t} shows the distribution of bias across varying total time points. 
+With no interaction and no time-varying unmeasured confounders, FE model still provides an unbiased estimate, while RE model has higher bias and OLS model gives the largest bias. Notably, as the number of time points (`T`) increases, the RE bias decreases, which may result from increasing number of data points.
 
-Figure \ref{fig:bias_with_t_treat} shows distribution of bias across varying treatment time points with $T=20$. Similarly, FE model gives unbiased estimate, RE model has higher bias, and OLS has the largest bias. As the treatment time points increases from 3 to 18, bias of RE model decreases.
+Figure \ref{fig:bias_with_t_treat} presents distribution of bias across varying treatment time points with `T` = 20. 
+Similarly, FE model gives unbiased estimate, RE model has higher bias, and OLS has the largest bias. 
+As the treatment time points increases from 3 to 18, bias of RE model decreases.
 
-Figure \ref{fig:bias_with_gamma} shows distribution of bias across varying unmeasured confounding coefficients. FE model gives unbiased estimate. As $\gamma$, the coefficient by which unmeasured confounders affect outcome increases, bias of OLS and RE model both increases, and bias of OLS model increases rapidly.
+In Figure \ref{fig:bias_with_gamma}, we show distribution of bias across varying unmeasured confounding coefficients. 
+FE model gives unbiased estimate. As $\gamma$, the coefficient by which unmeasured confounders affect outcome increases, bias of OLS and RE model both increases, and bias of OLS model increases rapidly.
 
-Figure \ref{fig:bias_with_rho} shows distribution of bias across varying true causal effects. Under different values of $\rho$ by which treatment affects outcome, bias of the three models doesn't change.
+Figure \ref{fig:bias_with_rho} shows distribution of bias across varying true causal effects. 
+Under different values of $\rho$ by which treatment affects outcome, bias of the three models does not change.
 
-Figure \ref{fig:bias_interaction} demonstrates that even fixed effects models are not able to estimate the treatment effects unbiasedly when there are interaction terms between the unmeasured confounding and treatment assignment or time. Specifically, Figure \ref{fig:bias_AD_interaction} presents the distribution of bias under different $\phi$ and three types of interactions ($\frac{1}{A}D$, $AD$, $A^2D$). Under the same type of interaction, all three biases increase as $\phi$ increases, with FE bias < RE bias < OLS bias always holding true. The deviation of the FE bias from 0 is reasonable since fixed effects can no longer absorb the unmeasured confounders under large $\phi$. In addition, a similar pattern is displayed in \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. This is because large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
+Figure \ref{fig:bias_interaction} demonstrates that even fixed effects models are not able to estimate the treatment effects unbiasedly when there are interaction terms between the unmeasured confounding and treatment assignment or time. 
+Specifically, Figure \ref{fig:bias_AD_interaction} presents the distribution of bias under different $\phi$ and three types of interactions ($\phi A_i D_{it}$, $\phi A_i^2 D_{it}$ and $\phi \frac{ 1}{A_i}D_{it}$). 
+Under the same type of interaction, all three biases increase as $\phi$ increases, with FE bias < RE bias < OLS bias always holding true. 
+The deviation of the FE bias from 0 is reasonable since fixed effects can no longer absorb the unmeasured confounders under large $\phi$. In addition, a similar pattern is displayed in \ref{fig:bias_AT_interaction}, where the three types of bias increase as $\beta$ increases under fixed time points $T$. 
+This is because large $\beta$ makes it more challenging for fixed effects to absorb unmeasured confounders. 
 
-Bias-corrected random effects models: Figure \ref{fig:bias_BiasCorrect_RE} and Figure \ref{fig:bias_BiasCorrect_RE_interaction}
+Bias-corrected random effects models: Figure \ref{fig:bias_correct_RE} and Figure \ref{fig:bias_BiasCorrect_inter}
+
 
 
 \section{Discussion}
@@ -192,11 +204,13 @@ Bias-corrected random effects models: Figure \ref{fig:bias_BiasCorrect_RE} and F
 
 Limitation and further direction: 
 
-Time-variant confounding? 
-
-More time points?
-
 Estimated coefficients of latent variable?
+
+Binary Case (outcome, confounding)?
+
+More sophiscated time-varying treatment?
+
+More complicated interaction beween confounding and treatment?
 
 
 Overall, our project and many literature suggest that while fixed/random effects models may be useful in controlling for unmeasured confounding in panel data analysis, they are not a panacea. Other methods, such as instrumental variables or regression discontinuity designs, may be more necessary in certain cases to fully address this issue.
@@ -209,7 +223,7 @@ Overall, our project and many literature suggest that while fixed/random effects
 
 For more technical details including all of our R codes, simulated data and results, feel free to visit our Github repo: https://github.com/sheny2/STA-640. 
 
-```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, t = 10 and t-treat = 5, faceted by the degree to which A affects D.",fig.height=6, fig.width=11, out.width="95%", eval = T}
+```{r With OLS, fig.cap="\\label{fig:all_bias_with_ols} Average bias of estimated treatment effects from four types of estimation methods under N = 100, T = 10 and T-treat = 5, faceted by the degree to which A affects D.",fig.height=6, fig.width=11, out.width="95%", eval = T}
 load("result_data/bias_result_interaction_gamma.RData")
 # gridExtra::grid.arrange(
 # bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Bias_Type", values_to = "Bias") %>%
@@ -660,7 +674,7 @@ BC_result_5_3_gamma3_phi5 %>% as_tibble() %>%
 ```
 
 
-\newpage
+<!-- \newpage -->
 
 \section{Reference}
 
