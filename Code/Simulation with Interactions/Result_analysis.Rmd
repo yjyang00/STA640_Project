@@ -12,7 +12,7 @@ ggplot2::theme_set(ggplot2::theme_bw())
 knitr::opts_chunk$set(out.width = "100%", fig.align = 'center')
 ```
 
-
+# all of our analysis / visualization is here. Simulation results are pre-saved. If you are interested in simulation code, feel free to check out other files in the folder. 
 
 ```{r, fig.width=10, fig.height=3.5}
 load("result_data/result_5_3_gamma1_phi0.RData")
@@ -355,7 +355,7 @@ result_10_5_gamma1_beta5 %>% as_tibble() %>%
 ```
 
 
-```{r, fig.width=10, fig.height=4, warning=FALSE, eval = F, echo = F}
+```{r, fig.width=10, fig.height=4, warning=FALSE}
 gridExtra::grid.arrange(
  BC_result_5_3_gamma3_phi0 %>% as_tibble() %>%
   pivot_longer(cols = c("OLS_bias","FE_bias", "BCRE_bias"), names_to = "Model", values_to = "Bias")%>% 

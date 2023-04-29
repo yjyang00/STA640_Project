@@ -111,7 +111,7 @@ confound_treatment = c("Small","Strong","Uniform")
 
 # Define a function to be applied in parallel
 bias_mutate <- function(df) {
-  df %>%  mutate(result = panel_bias_sim(S = 100, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
+  df %>%  mutate(result = panel_bias_sim(S = 10000, n, t, t_treat, delta, gamma, rho, phi, confound_treatment))
 }
 
 bias_result_no_interaction <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rho, phi, confound_treatment) %>% 

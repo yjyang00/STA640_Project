@@ -1,4 +1,3 @@
-library(tidyverse)
 library(foreach)
 library(doParallel)
 
@@ -11,21 +10,20 @@ cl <- makeCluster(8)
 registerDoParallel(cl)
 
 
-S = 1000
+S = 10000
 result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% {
   library(tidyverse)
   library(lme4)
-  n <- 50 
+  n <- 100 
   t <- 10
   t_treat <- 5
   
-  delta <- 1
-  gamma <- 1
-  rho <- 1
-  phi <- 0
-  beta <- 0
+  delta <- 5
+  gamma <- 3
+  rho <- 8
+  phi = 2
   
-  A <- runif(n, 0, 1)
+  A <- rnorm(n)
   X <- runif(n, 0, 10)
   
   X_it = c()
@@ -33,7 +31,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
     X_it = c(X_it, rnorm(n = t, mean = X[j], sd = 1))
   }
   
-  p = A
+  p = ifelse(A >= 1, 0.7, 0.3)
   D <- rbinom(n, 1, p)
   
   
@@ -43,8 +41,7 @@ result = foreach (i = 1:S, .combine = 'rbind', .errorhandling='remove') %dopar% 
     mutate(Time_to_treat = ifelse(Time < t_treat, 0, 1)) %>% 
     mutate(D_it = D * Time_to_treat) %>% 
     mutate(epsilon = rnorm(n*t, mean = 0, sd = 1)) %>% 
-    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*A*D_it + beta*A*Time + epsilon) %>% 
-    dplyr::group_by(id) %>% mutate(D_i_bar = mean(D_it)) %>% ungroup()
+    mutate(Y = (Time)^2 + gamma*A + delta*X_it + rho*D_it + phi*A*D_it + epsilon)
   
   # dat %>% ggplot(aes(x = Time, y = Y, group = factor(id), color = factor(D))) + geom_line() + facet_wrap(~factor(D))
 
@@ -97,19 +94,4 @@ colnames(result) = c("DID_est", "OLS_est", "FE_est", "RE_est",
                      "OLS_CI", "FE_CI", "RE_CI")
 colMeans(result)
 
-result_10_5_gamma1_beta0 = result
 
-save(result_10_5_gamma1_beta0, file = "result_data/result_10_5_gamma1_beta0.RData")
-
-
-# result %>% as_tibble() %>%
-#   pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Type", values_to = "Value")%>% 
-#   mutate(Type = factor(Type))%>% 
-#   mutate(Type = factor(Type, levels = c("OLS_bias","FE_bias", "RE_bias")))%>% 
-#   ggplot() + geom_boxplot(aes(x = Type, y = Value))
-# 
-# result %>% as_tibble() %>%
-#   pivot_longer(cols = c("FE_bias", "RE_bias"), names_to = "Type", values_to = "Value")%>%
-#   mutate(Type = factor(Type))%>%
-#   mutate(Type = factor(Type, levels = c("FE_bias", "RE_bias")))%>%
-#   ggplot() + geom_boxplot(aes(x = Type, y = Value))

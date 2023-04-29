@@ -87,7 +87,7 @@ beta_a = c(0,1,3,5,7)
 
 # Define a function to be applied in parallel
 bias_mutate <- function(df) {
-  df %>%  mutate(result = panel_bias_sim(S = 1000, n, t, t_treat, delta, gamma, rho, phi, beta, beta_a))
+  df %>%  mutate(result = panel_bias_sim(S = 10000, n, t, t_treat, delta, gamma, rho, phi, beta, beta_a))
 }
 
 bias_result_continuous <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rho, phi, beta, beta_a) %>% 
@@ -98,8 +98,6 @@ bias_result_continuous <- tidyr::expand_grid(n, t, t_treat, delta, gamma, rho, p
 
 
 # save(bias_result_interaction_phi, file = "result_data/bias_result_interaction_phi.RData")
-
-
 
 
 bias_result_continuous %>% pivot_longer(cols = c("OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>% 
