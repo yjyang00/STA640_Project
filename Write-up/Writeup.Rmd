@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Demystifying the Relationship Between Fixed/Random Effects and Unmeasured Confounding in Panel Data Analysis"
 author: "Yicheng Shen, Yanjiao Yang, Huiying Lin"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 header-includes:

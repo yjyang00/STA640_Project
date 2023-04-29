@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2023.2.27)  28 APR 2023 23:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2023.2.27)  29 APR 2023 00:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -492,32 +492,32 @@ LaTeX Warning: Label `fig:bias_interaction' multiply defined.
 )
 \openout1 = `Writeup.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 110.
-LaTeX Font Info:    ... okay on input line 110.
-LaTeX Info: Redefining \microtypecontext on input line 110.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Info: Redefining \microtypecontext on input line 113.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 110.
+LaTeX Info: Redefining \showhyphens on input line 113.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -579,7 +579,7 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 110.
+Package hyperref Info: Link coloring OFF on input line 113.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
@@ -589,148 +589,154 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count313
 )
-LaTeX Info: Redefining \ref on input line 110.
-LaTeX Info: Redefining \pageref on input line 110.
-LaTeX Info: Redefining \nameref on input line 110.
-[1
-
-{/usr/share/texlive/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<Image/DAG.png, id=13, 397.485pt x 217.81375pt>
-File: Image/DAG.png Graphic file (type png)
-<use Image/DAG.png>
-Package pdftex.def Info: Image/DAG.png  used on input line 202.
-(pdftex.def)             Requested size: 234.88408pt x 128.71172pt.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2
-19.
+LaTeX Info: Redefining \ref on input line 113.
+LaTeX Info: Redefining \pageref on input line 113.
+LaTeX Info: Redefining \nameref on input line 113.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
+15.
 (/usr/share/texlive/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-19.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
+15.
 (/usr/share/texlive/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-219.
+115.
 (/usr/share/texlive/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-219.
+115.
 (/usr/share/texlive/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 219.
+(Font)              <12> on input line 115.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 219.
+(Font)              <8> on input line 115.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 219.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 219
+(Font)              <6> on input line 115.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 115
 .
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 219
+LaTeX Font Info:    Trying to load font information for U+msb on input line 115
 .
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
+) [1
+
+{/usr/share/texlive/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+<Image/DAG.png, id=15, 397.485pt x 217.81375pt>
+File: Image/DAG.png Graphic file (type png)
+<use Image/DAG.png>
+Package pdftex.def Info: Image/DAG.png  used on input line 206.
+(pdftex.def)             Requested size: 234.88408pt x 128.71172pt.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 223.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 223.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 223.
+[2 <./Image/DAG.png>]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-37.
+41.
 (/usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [2 <./Image/DAG.png>]
+)
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-58.
+62.
 (/usr/share/texlive/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [3] [4]
 
 LaTeX Warning: Reference `fig:bias_BiasCorrect_RE' on page 5 undefined on input
- line 414.
+ line 418.
 
 
 LaTeX Warning: Reference `fig:bias_BiasCorrect_RE_interaction' on page 5 undefi
-ned on input line 415.
+ned on input line 419.
 
 [5]
-<Writeup_files/figure-latex/With OLS-1.pdf, id=66, 778.91pt x 420.57124pt>
+<Writeup_files/figure-latex/With OLS-1.pdf, id=68, 778.91pt x 420.57124pt>
 File: Writeup_files/figure-latex/With OLS-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/With OLS-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/With OLS-1.pdf  used on inp
-ut line 443.
+ut line 447.
 (pdftex.def)             Requested size: 446.26527pt x 240.96024pt.
-<Writeup_files/figure-latex/n_of_time-1.pdf, id=67, 712.6625pt x 240.9pt>
+<Writeup_files/figure-latex/n_of_time-1.pdf, id=69, 712.6625pt x 240.9pt>
 File: Writeup_files/figure-latex/n_of_time-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/n_of_time-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/n_of_time-1.pdf  used on in
-put line 452.
+put line 456.
 (pdftex.def)             Requested size: 413.38805pt x 139.73679pt.
-<Writeup_files/figure-latex/n_of_time_treat-1.pdf, id=68, 712.6625pt x 240.9pt>
+<Writeup_files/figure-latex/n_of_time_treat-1.pdf, id=70, 712.6625pt x 240.9pt>
 
 File: Writeup_files/figure-latex/n_of_time_treat-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/n_of_time_treat-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/n_of_time_treat-1.pdf  used
- on input line 461.
+ on input line 465.
 (pdftex.def)             Requested size: 413.38805pt x 139.73679pt.
 [6 <./Writeup_files/figure-latex/With OLS-1.pdf> <./Writeup_files/figure-latex/
 n_of_time-1.pdf>]
-<Writeup_files/figure-latex/bias_gamma-1.pdf, id=89, 712.6625pt x 240.9pt>
+<Writeup_files/figure-latex/bias_gamma-1.pdf, id=91, 712.6625pt x 240.9pt>
 File: Writeup_files/figure-latex/bias_gamma-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_gamma-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_gamma-1.pdf  used on i
-nput line 470.
+nput line 474.
 (pdftex.def)             Requested size: 413.38805pt x 139.73679pt.
-<Writeup_files/figure-latex/bias_rho-1.pdf, id=90, 712.6625pt x 240.9pt>
+<Writeup_files/figure-latex/bias_rho-1.pdf, id=92, 712.6625pt x 240.9pt>
 File: Writeup_files/figure-latex/bias_rho-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_rho-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_rho-1.pdf  used on inp
-ut line 479.
+ut line 483.
 (pdftex.def)             Requested size: 413.38805pt x 139.73679pt.
-<Writeup_files/figure-latex/bias_interaction-1.pdf, id=91, 778.91pt x 421.575pt
+<Writeup_files/figure-latex/bias_interaction-1.pdf, id=93, 778.91pt x 421.575pt
 >
 File: Writeup_files/figure-latex/bias_interaction-1.pdf Graphic file (type pdf)
 
 <use Writeup_files/figure-latex/bias_interaction-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_interaction-1.pdf  use
-d on input line 488.
+d on input line 492.
 (pdftex.def)             Requested size: 399.29498pt x 216.11325pt.
 [7 <./Writeup_files/figure-latex/n_of_time_treat-1.pdf> <./Writeup_files/figure
 -latex/bias_gamma-1.pdf> <./Writeup_files/figure-latex/bias_rho-1.pdf>]
-<Writeup_files/figure-latex/bias_interactions-1.pdf, id=120, 717.68124pt x 638.
+<Writeup_files/figure-latex/bias_interactions-1.pdf, id=122, 717.68124pt x 638.
 385pt>
 File: Writeup_files/figure-latex/bias_interactions-1.pdf Graphic file (type pdf
 )
 <use Writeup_files/figure-latex/bias_interactions-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_interactions-1.pdf  us
-ed on input line 497.
+ed on input line 501.
 (pdftex.def)             Requested size: 399.30339pt x 355.18454pt.
-<Writeup_files/figure-latex/bias_interactions_AT-1.pdf, id=121, 712.6625pt x 49
+<Writeup_files/figure-latex/bias_interactions_AT-1.pdf, id=123, 712.6625pt x 49
 3.845pt>
 File: Writeup_files/figure-latex/bias_interactions_AT-1.pdf Graphic file (type 
 pdf)
 <use Writeup_files/figure-latex/bias_interactions_AT-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_interactions_AT-1.pdf 
- used on input line 506.
+ used on input line 510.
 (pdftex.def)             Requested size: 399.29489pt x 276.69447pt.
 [8 <./Writeup_files/figure-latex/bias_interaction-1.pdf> <./Writeup_files/figur
 e-latex/bias_interactions-1.pdf>]
-<Writeup_files/figure-latex/bias_correct-1.pdf, id=142, 712.6625pt x 240.9pt>
+<Writeup_files/figure-latex/bias_correct-1.pdf, id=144, 712.6625pt x 240.9pt>
 File: Writeup_files/figure-latex/bias_correct-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_correct-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_correct-1.pdf  used on
- input line 515.
+ input line 519.
 (pdftex.def)             Requested size: 413.38805pt x 139.73679pt.
-<Writeup_files/figure-latex/bias_inter_BC-1.pdf, id=143, 712.6625pt x 240.9pt>
+<Writeup_files/figure-latex/bias_inter_BC-1.pdf, id=145, 712.6625pt x 240.9pt>
 File: Writeup_files/figure-latex/bias_inter_BC-1.pdf Graphic file (type pdf)
 <use Writeup_files/figure-latex/bias_inter_BC-1.pdf>
 Package pdftex.def Info: Writeup_files/figure-latex/bias_inter_BC-1.pdf  used o
-n input line 524.
+n input line 528.
 (pdftex.def)             Requested size: 413.38805pt x 139.73679pt.
 [9 <./Writeup_files/figure-latex/bias_interactions_AT-1.pdf> <./Writeup_files/f
 igure-latex/bias_correct-1.pdf>] [10 <./Writeup_files/figure-latex/bias_inter_B
@@ -743,13 +749,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14434 strings out of 478862
- 216697 string characters out of 5858945
- 567548 words of memory out of 6000000
- 31605 multiletter control sequences out of 15000+600000
- 454690 words of font info for 119 fonts, out of 8000000 for 9000
+ 14495 strings out of 478862
+ 217578 string characters out of 5858945
+ 567228 words of memory out of 6000000
+ 31643 multiletter control sequences out of 15000+600000
+ 470350 words of font info for 142 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
- 74i,9n,77p,512b,336s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 74i,9n,77p,512b,344s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texli
 ve/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texlive/texmf-dist/f
 onts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/
@@ -760,14 +766,16 @@ s/type1/public/lm/lmbxi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
 /lm/lmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/lm/lmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-lm/lmri10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Writeup.pdf (11 pages, 361726 bytes).
+nts/type1/public/lm/lmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/lm/lmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr7.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/lm/lmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/lm/lmtt10.pfb>
+Output written on Writeup.pdf (11 pages, 413080 bytes).
 PDF statistics:
- 283 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
+ 291 PDF objects out of 1000 (max. 8388607)
+ 229 compressed objects within 3 object streams
  43 named destinations out of 1000 (max. 500000)
- 28800 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 36992 words of extra memory for PDF output out of 42996 (max. 10000000)
 
