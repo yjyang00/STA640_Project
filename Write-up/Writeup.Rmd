@@ -260,7 +260,7 @@ levels(bias_result_full$confound_treatment)[levels(bias_result_full$confound_tre
 
 gridExtra::grid.arrange(
 bias_result_interaction_gamma %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>%
-  filter(gamma < 3) %>% ggplot(aes(x = gamma, y = Bias, color = Model)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
+  filter(gamma < 2) %>% ggplot(aes(x = gamma, y = Bias, color = Model)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(gamma))
 ,
 bias_result_full %>% pivot_longer(cols = c("DID_bias","OLS_bias","FE_bias", "RE_bias"), names_to = "Model", values_to = "Bias") %>%
   filter(gamma == 1) %>% ggplot(aes(x = rho, y = Bias, color = Model)) + geom_point() + geom_line() + facet_wrap(~confound_treatment) + labs(x = expression(rho))
