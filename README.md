@@ -1,6 +1,8 @@
 # STA-640
 640 Project
 
+Authors: Yicheng Shen, Yanjiao Yang, Huiying Lin
+
 Do fixed/random effects account for unmeasured confounding? 
 
 <img width="715" alt="Screenshot 2023-04-19 at 9 58 08 PM" src="https://user-images.githubusercontent.com/67173948/233238251-43b5dc0b-5c09-47bf-966e-ed30e645d135.png">
