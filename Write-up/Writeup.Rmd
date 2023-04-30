@@ -233,7 +233,9 @@ Overall, our project, along with many literatures, suggests that while fixed/ran
 \newpage
 
 
-\section{Graphical Appendix}
+\section{Appendix}
+
+All three team members contribute to the write up of this project. 
 
 For more technical details including all of our R codes, simulated data and results, feel free to visit our Github repo: https://github.com/sheny2/STA-640. 
 
